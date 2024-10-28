@@ -8,7 +8,7 @@ import CloudImage from "./CloudImage";
 // next js dynamic import
 
 const EventCard = ({ eventData }: { eventData: EventType }) => {
-    const { city, description: eventDescription, eventDate, ticketPrice, title, registeredAttendees, isFree, eventId } = eventData
+    const { city, description: eventDescription, eventDate, ticketPrice, title, registeredAttendees, isFree, eventId, eventImage } = eventData
     const today = new Date()
     const truncatedDescription = eventDescription.slice(0, 100)
 
@@ -16,7 +16,7 @@ const EventCard = ({ eventData }: { eventData: EventType }) => {
         <Link href={`/events/${eventId}`} className="flex-1 w-full md:min-w-[300px] max-w-[350px] aspect-square flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer shadow-sm bg-accent transition-all ease-in duration-700 group hover:shadow-md">
             {/* image */}
             <div className="w-full h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 object-cover relative">
-                <CloudImage image_id={eventId} />
+                <CloudImage image_id={eventImage} />
             </div>
 
             {/* Title within Image  */}

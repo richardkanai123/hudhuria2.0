@@ -12,7 +12,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 10000,
       "registeredAttendees": ["user2", "user3"],
-      "eventImage": "url_to_image_1",
+      "eventImage": "cld-sample-3",
       "status": "upcoming",
       "createdAt": "2023-10-01T10:00:00Z",
       "updatedAt": "2023-10-05T12:00:00Z"
@@ -30,7 +30,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 5000,
       "registeredAttendees": ["user5"],
-      "eventImage": "url_to_image_2",
+      "eventImage": "cld-sample-2",
       "status": "upcoming",
       "createdAt": "2023-09-25T08:30:00Z",
       "updatedAt": "2023-10-01T09:30:00Z"
@@ -48,7 +48,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 2000,
       "registeredAttendees": ["user7", "user8"],
-      "eventImage": "url_to_image_3",
+      "eventImage": "cld-sample-5",
       "status": "passed",
       "createdAt": "2023-09-15T11:00:00Z",
       "updatedAt": "2023-10-03T10:30:00Z"
@@ -66,7 +66,7 @@ export const eventsList =  [
       "isFree": true,
       "maxAttendees": 200,
       "registeredAttendees": ["user10", "user11", "user12"],
-      "eventImage": "url_to_image_4",
+      "eventImage": "cld-sample",
       "status": "upcoming",
       "createdAt": "2023-08-20T07:30:00Z",
       "updatedAt": "2023-09-25T11:00:00Z"
@@ -84,7 +84,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 500,
       "registeredAttendees": ["user14", "user15"],
-      "eventImage": "url_to_image_5",
+      "eventImage": "cld-sample-5",
       "status": "upcoming",
       "createdAt": "2023-10-10T09:00:00Z",
       "updatedAt": "2023-10-18T08:45:00Z"
@@ -102,7 +102,7 @@ export const eventsList =  [
       "isFree": true,
       "maxAttendees": 1000,
       "registeredAttendees": ["user17", "user18", "user19"],
-      "eventImage": "url_to_image_6",
+      "eventImage": "cld-sample-4",
       "status": "upcoming",
       "createdAt": "2023-09-10T14:00:00Z",
       "updatedAt": "2023-09-20T09:45:00Z"
@@ -120,7 +120,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 300,
       "registeredAttendees": ["user21", "user22"],
-      "eventImage": "url_to_image_7",
+      "eventImage": "woman-on-a-football-field",
       "status": "upcoming",
       "createdAt": "2023-09-05T11:00:00Z",
       "updatedAt": "2023-10-01T10:15:00Z"
@@ -138,7 +138,7 @@ export const eventsList =  [
       "isFree": true,
       "maxAttendees": 1000,
       "registeredAttendees": ["user24", "user25"],
-      "eventImage": "url_to_image_8",
+      "eventImage": "cld-sample-2",
       "status": "upcoming",
       "createdAt": "2023-09-08T10:00:00Z",
       "updatedAt": "2023-09-28T09:50:00Z"
@@ -156,7 +156,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 300,
       "registeredAttendees": ["user27", "user28", "user29"],
-      "eventImage": "url_to_image_9",
+      "eventImage": "cld-sample",
       "status": "passed",
       "createdAt": "2023-09-18T10:15:00Z",
       "updatedAt": "2023-10-03T08:50:00Z"
@@ -174,7 +174,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 1000,
       "registeredAttendees": ["user31", "user32"],
-      "eventImage": "url_to_image_10",
+      "eventImage": "cld-sample-4",
       "status": "upcoming",
       "createdAt": "2023-09-28T09:00:00Z",
       "updatedAt": "2023-10-05T12:30:00Z"
@@ -192,7 +192,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 2000,
       "registeredAttendees": ["user7", "user8", "user9","user10"],
-      "eventImage": "url_to_image_3",
+      "eventImage": "cld-sample",
       "status": "upcoming",
       "createdAt": "2023-09-15T11:00:00Z",
       "updatedAt": "2023-10-03T10:30:00Z"
