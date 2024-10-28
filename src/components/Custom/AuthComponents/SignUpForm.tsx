@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { FaGoogle } from "react-icons/fa6"
+import { FcGoogle } from "react-icons/fc";
 
 export function SignUpForm() {
     return (
@@ -50,11 +50,11 @@ export function SignUpForm() {
                         <Label htmlFor="confrimPassword">Confrim Password</Label>
                         <Input id="confrimPassword" type="password" />
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full font-semibold hover:bg-opacity-75  ">
                         Create an account
                     </Button>
-                    <Button variant="outline" className="w-full">
-                        <FaGoogle className="w-4 h-4 mr-3" />  Sign up with Google
+                    <Button variant="outline" className="w-full bg-sky-800 text-white">
+                        <FcGoogle className="w-4 h-4 mr-3" />  Sign up with Google
                     </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">

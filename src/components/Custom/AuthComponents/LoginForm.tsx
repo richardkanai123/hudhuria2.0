@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { IoLogIn } from "react-icons/io5";
 import Link from "next/link"
-import { FaGoogle } from "react-icons/fa6"
+import { FcGoogle } from "react-icons/fc"
 
 export function LoginForm() {
     return (
@@ -43,10 +44,10 @@ export function LoginForm() {
                         <Input id="password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full">
-                        Login
+                        <IoLogIn className="w-4 h-4 mr-2" />  Login
                     </Button>
-                    <Button variant="outline" className="w-full">
-                        <FaGoogle className="w-4 h-4 mr-2" />   Login with Google
+                    <Button variant="outline" className="w-full  bg-sky-800 text-white">
+                        <FcGoogle className="w-4 h-4 mr-2" />   Login with Google
                     </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">

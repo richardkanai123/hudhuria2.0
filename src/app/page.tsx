@@ -30,11 +30,7 @@ export default function Home() {
       </Suspense>
       {/* Cities carousel */}
       <CitiesCarousel />
-
-
       {/* contact form */}
-
-
       <ContactForm />
 
 

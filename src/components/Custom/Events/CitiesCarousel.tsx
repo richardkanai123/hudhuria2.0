@@ -8,32 +8,32 @@ const CitiesCarousel = () => {
     const Cities = [
         {
             "name": "Nairobi",
-            "image": "https://images.unsplash.com/photo-1669127300649-940337f1487e?q=80&w=1635&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/nairobi.jpg",
             "description": "Kenya's bustling capital city, is a vibrant hub for culture, business, and wildlife."
         },
         {
             "name": "Kisumu",
-            "image": "https://images.unsplash.com/photo-1690715408641-fd1d5b8931fe?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/kisumu.jpg",
             "description": "A port city on Lake Victoria, offers scenic lakeside views and a rich cultural heritage."
         },
         {
             "name": "Mombasa",
-            "image": "https://images.unsplash.com/photo-1673902274292-36d5732dd3a4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/mombasa.jpg",
             "description": "A coastal city, is known for its beautiful beaches and Swahili culture."
         },
         {
             "name": "Eldoret",
-            "image": "https://plus.unsplash.com/premium_photo-1666426138194-b2679ce9602d?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/eldoret.jpg",
             "description": "A highland city known for its athletics champions and agricultural wealth."
         },
         {
             "name": "Kakamega",
-            "image": "https://images.unsplash.com/photo-1708515961610-869981297fb6?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/Kakamega.png",
             "description": "Home to the Kakamega Forest, offers lush landscapes and rich biodiversity."
         },
         {
             "name": "Nyali",
-            "image": "https://images.unsplash.com/photo-1685380518106-308ed23847a4?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "image": "/nyali.jpg",
             "description": "A serene coastal suburb of Mombasa, known for its pristine beaches and upscale resorts."
         },
         {
@@ -53,7 +53,7 @@ const CitiesCarousel = () => {
 
                         {Cities.map((city) => (
 
-                            <Link href={`/events${city.name.toLocaleLowerCase()}`}
+                            <Link href={`/events?city=${city.name.toLocaleLowerCase()}`}
                                 key={city.name.toLocaleLowerCase()} className="min-w-[280px] h-[250px] md:w-[300px] max-w-xs group cursor-pointer  rounded-md overflow-hidden shadow-sm transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                                 <div
                                     style={{
