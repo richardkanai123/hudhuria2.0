@@ -120,7 +120,7 @@ export const eventsList =  [
       "isFree": false,
       "maxAttendees": 300,
       "registeredAttendees": ["user21", "user22"],
-      "eventImage": "woman-on-a-football-field",
+      "eventImage": "cld-sample",
       "status": "upcoming",
       "createdAt": "2023-09-05T11:00:00Z",
       "updatedAt": "2023-10-01T10:15:00Z"

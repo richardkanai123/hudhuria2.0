@@ -5,7 +5,6 @@ import { v } from "convex/values";
 
 export default defineSchema({
     eventsTable: defineTable({
-        eventId: v.id('eventsTable'),
         eventTitle: v.string(),
         description: v.string(),
         location: v.string(),
@@ -24,10 +23,7 @@ export default defineSchema({
         isPublished: v.boolean(),
         isDeleted: v.boolean(),
         isFeatured: v.boolean(),
-        createdAt: v.string(),
-        updatedAt: v.string(),
     })
-        .index("by_event_id", ["eventId"])
         .index("by_event_title", ["eventTitle"])
         .index("by_city", ["city"])
         .index("by_category", ["category"]),

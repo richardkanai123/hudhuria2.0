@@ -1,13 +1,17 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
-import { Menu } from 'lucide-react'
+import { IoLogInSharp } from "react-icons/io5";
 import {
     Sheet,
     SheetClose,
     SheetContent,
+    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from 'next/link'
 import Image from 'next/image'
+import { Menu } from 'lucide-react';
 const Header = () => {
     return (
         <header className="w-full sticky top-0 backdrop-blur-sm pt-2 px-4 pb-4 flex align-middle justify-between items-center bg-slate-50 z-20">
@@ -60,10 +64,14 @@ const Header = () => {
                     </SheetTrigger>
                     <SheetContent className='mt-4'>
 
+                        <SheetTitle className=" bg-transparent">
+                            <SheetTrigger className="bg-transparent md:hidden flex align-middle justify-center text-sm font-light">
+                                Close <IoLogInSharp className='ml-1 w-4 h-4' />
+                            </SheetTrigger>
+                        </SheetTitle>
                         {/* logo */}
-                        <Link href="/" className='flex flex-col items-center gap-2'>
-                            <h1 className="text-2xl font-bold text-primary">Hudhuria</h1>
-                            <Image src="/EventBanner.jpeg" className="mx-auto w-[80%]  aspect-video " alt="logo" />
+                        <Link href="/" className='flex flex-col items-center gap-2 relative'>
+                            <span className="text-2xl font-bold text-primary">Hudhuria</span>
                         </Link>
 
                         <nav className='w-full flex flex-col gap-4 align-middle mt-4'>

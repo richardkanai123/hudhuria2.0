@@ -10,7 +10,7 @@ const ContactForm = () => {
             <h1 className='text-2xl text-center font-bold text-primary'>Contact Us</h1>
             <form className="w-full max-w-lg mx-auto p-4 space-y-4 bg-slate-100 shadow-md rounded-md flex flex-col justify-center items-center ">
 
-                <div className="w-full space-x-4 flex mb-4">
+                <div className="w-full md:space-x-4 flex flex-col gap-4 md:gap-[unset] md:flex-row mb-4">
                     <div>
                         <label htmlFor="Firstname" className="block  text-primary font-bold mb-2">
                             Firstname
@@ -25,7 +25,7 @@ const ContactForm = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="Surname" className="block  text-primary font-bold mb-2">
+                        <label htmlFor="Surname" className="block text-primary font-bold md:mb-2">
                             Surname
                         </label>
 
