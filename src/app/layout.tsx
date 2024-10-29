@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Custom/nav/Header";
 import Footer from "@/components/Custom/nav/Footer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -83,6 +85,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </div>
+        <ToastContainer />
       </body>
     </html>
   );

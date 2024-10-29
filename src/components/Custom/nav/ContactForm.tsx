@@ -20,7 +20,7 @@ const ContactForm = () => {
                             type='text'
                             id='Firstname'
                             name='Firstname'
-                            className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500 placeholder:text-sm placeholder:font-light"
                             placeholder="Enter your Firstname"
                         />
                     </div>
@@ -33,7 +33,7 @@ const ContactForm = () => {
                             type='text'
                             id='Surname'
                             name='Surname'
-                            className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500 placeholder:text-sm placeholder:font-light"
                             placeholder="Enter your surname"
                         /></div>
                 </div>
@@ -48,7 +48,7 @@ const ContactForm = () => {
                         type='email'
                         id='email'
                         name='email'
-                        className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500 placeholder:text-sm placeholder:font-light"
                         placeholder="Enter your email"
                     />
 
@@ -62,7 +62,7 @@ const ContactForm = () => {
                     <Textarea
                         id='message'
                         name='message'
-                        className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-slate-200 text-sky-800 font-semibold rounded-md focus:outline-none focus:border-blue-500 placeholder:text-sm placeholder:font-light"
                         placeholder="Enter your message"
                         rows={5}
                         cols={50}

@@ -1,6 +1,6 @@
 import {  query,mutation } from "./_generated/server";
 import {v} from "convex/values"
-export const getAllEvent = query(async ({ db }) => { 
+export const getAllEvents = query(async ({ db }) => { 
 
     const events = await db.query("eventsTable").collect()
 

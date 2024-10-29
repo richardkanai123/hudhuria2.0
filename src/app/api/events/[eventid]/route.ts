@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     if (!event) {
         return NextResponse.json({ message: "Event not found" }, { status: 404 });
     }
-    return NextResponse.json({ event }, { status: 200 });
+    return NextResponse.json( event , { status: 200 });
     } catch (error) {
          if (error instanceof Error) {
             return NextResponse.json({ message: error.message }, { status: 500 })
