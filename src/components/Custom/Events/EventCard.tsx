@@ -15,7 +15,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
     return (
         <Link href={`/events/${_id}`} className="flex-1 w-full md:min-w-[300px] max-w-[350px] aspect-square flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer shadow-sm bg-accent transition-all ease-in duration-700 group hover:shadow-md">
             {/* image */}
-            <div className="w-full h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 object-cover relative">
+            <div className="w-full h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 relative">
                 <CloudImage image_id={image_id} />
             </div>
 
@@ -45,7 +45,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
                 {/* payment details */}
                 <div className="w-full flex justify-around flex-wrap ">
                     <div className="text-base flex items-center gap-1 px-2">
-                        {isPaid ? <Badge className="bg-lime-600">Free</Badge> : <span className="text-primary">Ksh. {ticket_price}</span>}
+                        {isPaid ? <span className="text-primary">Ksh. {ticket_price}</span> : <Badge className="bg-lime-600">Free</Badge>}
                     </div>
                     <p className="text-base flex items-center gap-1">
                         <UsersRound className="w-4 h-4 inline-block mr-1" />

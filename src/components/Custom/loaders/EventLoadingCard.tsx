@@ -15,11 +15,11 @@ const EventLoadingCard = () => {
                     (
 
                         <div key={index} className="flex-1 w-full md:min-w-[300px] max-w-[350px] aspect-square flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer shadow-sm bg-accent transition-all ease-in duration-700 group hover:shadow-md">
-                            <div className="w-full h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 object-cover relative">
+                            <div className="w-full h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 object-cover relative animate-pulse ">
 
                             </div>
                             <div className="w-full px-1 pb-4 flex flex-col gap-2">
-                                <h2 className="w-full text-xl font-semibold text-primary text-slate-200">Event Title</h2>
+                                <h2 className="w-full text-xl font-semibold text-primary text-slate-200 animate-pulse delay-1000">Event Title</h2>
 
 
                                 <p className="w-full text-xs text-gray-500">

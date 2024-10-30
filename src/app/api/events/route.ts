@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const bodyData = await request.json();
-        console.table(bodyData)
         // validate body
         const { valid, error } = validateEventSchema(bodyData);
         if (!valid) {
