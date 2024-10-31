@@ -45,8 +45,6 @@ const EventDetailsPage = async (props: { params: Promise<{ eventid: string }> })
     const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, attendees, ticket_available, location } = event
 
 
-
-
     return (
         <div className='w-full h-fit min-h-[75vh] flex flex-col items-center align-middle justify-center pt-2' >
             <div className='w-full aspect-video max-h-[400px] relative object-contain'>
@@ -61,12 +59,10 @@ const EventDetailsPage = async (props: { params: Promise<{ eventid: string }> })
                 <p className='max-w-screen-lg text-lg text-secondary-foreground tracking-wide mb-2'>{description} </p>
                 <TicketCard isPaid={isPaid} price={ticket_price} ticket_available={ticket_available} eventID={_id} />
 
-
                 <TimeAndDateDisplay startDate={startDate} endDate={endDate} />
 
                 <LocationDetails city={city} venue={location} />
             </div>
-
 
         </div >
     );
