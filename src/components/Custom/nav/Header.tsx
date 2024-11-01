@@ -6,7 +6,6 @@ import {
     Sheet,
     SheetClose,
     SheetContent,
-    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from 'next/link'
@@ -64,14 +63,12 @@ const Header = () => {
                     </SheetTrigger>
                     <SheetContent className='mt-4'>
 
-                        <SheetTitle className=" bg-transparent">
-                            <SheetTrigger className="bg-transparent md:hidden flex align-middle justify-center text-sm font-light">
-                                Close <IoLogInSharp className='ml-1 w-4 h-4' />
-                            </SheetTrigger>
-                        </SheetTitle>
+                        <SheetTrigger className="bg-transparent md:hidden flex align-middle justify-center text-sm font-light">
+                            Close <IoLogInSharp className='ml-1 w-4 h-4' />
+                        </SheetTrigger>
                         {/* logo */}
                         <Link href="/" className='flex flex-col items-center gap-2 relative'>
-                            <span className="text-2xl font-bold text-primary">Hudhuria</span>
+                            Hudhuria
                         </Link>
 
                         <nav className='w-full flex flex-col gap-4 align-middle mt-4'>

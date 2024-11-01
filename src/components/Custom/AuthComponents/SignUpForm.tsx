@@ -37,6 +37,12 @@ export function SignUpForm() {
 
     const form = useForm<z.infer<typeof NewUserSchema>>({
         resolver: zodResolver(NewUserSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        }
     })
 
     const SignUpNewUser = async (data: z.infer<typeof NewUserSchema>) => {
@@ -97,7 +103,7 @@ export function SignUpForm() {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="Your preferred password" {...field} />
+                                        <Input type="password" placeholder="Your preferred password" {...field} />
                                     </FormControl>
                                     <FormDescription>
                                         Must be atleast 8 characters.
@@ -114,7 +120,7 @@ export function SignUpForm() {
                                 <FormItem>
                                     <FormLabel>Confrim Password</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="Confirm your password" {...field} />
+                                        <Input type="password" placeholder="Confirm your password" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
