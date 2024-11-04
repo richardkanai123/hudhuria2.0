@@ -37,6 +37,14 @@ export default defineSchema({
         amount: v.number(),
         phoneNumber: v.string(),
         createdAt: v.string(),
+    }),
+    usersTable: defineTable({
+        email: v.string(),
+        name: v.string(),
+        bio: v.string(),
+        password: v.string(),
+        isVerified: v.boolean(),
+        isAdmin: v.boolean(),
     })
     
 })

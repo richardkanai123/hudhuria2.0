@@ -35,3 +35,4 @@ export const compareDates = (startDate: string, endDate: string) => {
     return false
   }
 }
+
