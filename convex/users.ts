@@ -47,3 +47,39 @@ export const getUserById = query({
         return user;
     },
 })
+
+
+// update existing user data 
+
+export const updateUser = mutation({
+    args: {
+        // user schema here
+        id: v.id("usersTable"),
+        name: v.string(),
+        email: v.string(),
+        bio: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const user = await ctx.db.patch(args.id, {
+            name: args.name,
+            email: args.email,
+            bio: args.bio,
+        });
+        return {
+            user,
+            status: true
+        };
+    },
+})
+
+
+// check if user exists by email
+export const getUserByEmail = query({
+    args: { email: v.string() },
+    handler: async (ctx, args) => {
+        const user = await ctx.db.query("usersTable")
+            .filter(q => q.eq(q.field("email"), args.email))
+            .first();
+        return user;
+    },
+})

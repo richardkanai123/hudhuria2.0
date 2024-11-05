@@ -45,6 +45,6 @@ export default defineSchema({
         password: v.string(),
         isVerified: v.boolean(),
         isAdmin: v.boolean(),
-    })
+    }).index("by_email", ["email"])
     
 })

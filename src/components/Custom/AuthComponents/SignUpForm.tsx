@@ -19,6 +19,7 @@ import { FormControl, Form, FormDescription, FormField, FormItem, FormLabel, For
 const NewUserSchema = z.object({
     name: z.string().min(5, { message: "Too short, minimum is 5 characters" }),
     email: z.string().email({ message: "Invalid email" }),
+    bio: z.string().min(10, { message: "Bio is required, at least 10 characters" }),
     password: z
         .string()
         .min(1, { message: "Password is required" })
@@ -42,6 +43,7 @@ export function SignUpForm() {
             email: "",
             password: "",
             confirmPassword: "",
+            bio: "",
         }
     })
 
@@ -90,6 +92,22 @@ export function SignUpForm() {
                                     </FormControl>
                                     <FormDescription>
                                         This is your public contact email address.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="bio"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Bio</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" placeholder="Bio goes here " {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        This is your public brief statement or tagline.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
