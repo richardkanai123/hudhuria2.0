@@ -5,7 +5,7 @@ import Header from "@/components/Custom/nav/Header";
 import Footer from "@/components/Custom/nav/Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import SessionProvider from "@/components/Custom/AuthComponents/SessionProvider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -76,17 +76,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full `}
-      >
-        <div className="container mx-auto max-w-screen-2xl relative w-full min-h-screen max-h-fit">
-          <Header />
-          {children}
-          <Footer />
-        </div>
-        <ToastContainer />
-      </body>
+      <SessionProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased w-full `}
+        >
+          <div className="container mx-auto max-w-screen-2xl relative w-full min-h-screen max-h-fit">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+          <ToastContainer />
+        </body>
+      </SessionProvider>
     </html>
   );
 }

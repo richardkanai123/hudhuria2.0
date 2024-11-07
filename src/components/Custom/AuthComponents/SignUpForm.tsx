@@ -14,7 +14,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormControl, Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-
+import { toast } from "react-toastify"
+import { TiTick } from "react-icons/ti";
+import { FaSpinner } from "react-icons/fa6"
 
 const NewUserSchema = z.object({
     name: z.string().min(5, { message: "Too short, minimum is 5 characters" }),
@@ -48,7 +50,38 @@ export function SignUpForm() {
     })
 
     const SignUpNewUser = async (data: z.infer<typeof NewUserSchema>) => {
-        console.table(data)
+        try {
+            const UsersApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/users`
+            const response = await fetch(UsersApiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+
+            const responseData = await response.json()
+
+            if (response.status === 201) {
+
+                toast.success(responseData.message as string, {
+                    theme: 'colored',
+                    position: 'top-center',
+                    icon: <TiTick />,
+                })
+                form.reset()
+            } else {
+                // set error message in the root of the form
+                form.setError("root", { message: responseData.message as string })
+            }
+        } catch (error) {
+            // set error message in the root of the form
+            if (error instanceof Error) {
+                form.setError("root", { message: error.message })
+            } else {
+                form.setError("root", { message: "Something went wrong, try again later" })
+            }
+        }
 
     }
 
@@ -144,8 +177,21 @@ export function SignUpForm() {
                                 </FormItem>
                             )}
                         />
+
+                        {form.formState.errors.root && (
+                            <p className="text-red-500 text-sm">
+                                {form.formState.errors.root.message}
+                            </p>
+                        )}
                         <Button type="submit" className="w-full font-semibold hover:bg-lime-500  ">
-                            Create an account
+                            {
+                                form.formState.isSubmitting && <FaSpinner className="w-4 h-4 mr-3 animate-spin" />
+                            }
+                            {
+                                form.formState.isSubmitting
+                                    ? "Creating Account.."
+                                    : "Create an account"
+                            }
                         </Button>
                         <Button variant="outline" className="w-full bg-sky-800 text-white">
                             <FcGoogle className="w-4 h-4 mr-3" />  Sign up with Google

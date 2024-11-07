@@ -3,7 +3,7 @@ import EventCard from "./EventCard"
 
 const UpcomingEventsLister = async () => {
 
-    const eventsApiUrl = 'http://localhost:3000/api/events'
+    const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
     await delay(3000)

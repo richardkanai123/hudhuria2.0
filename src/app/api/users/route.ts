@@ -39,6 +39,7 @@ const validateUserSchema = (bodyData: unknown) => {
 
 }
 
+// create a new user
 export async function POST(request: NextRequest) { 
     try {
         // add new user

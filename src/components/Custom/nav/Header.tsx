@@ -6,11 +6,13 @@ import {
     Sheet,
     SheetClose,
     SheetContent,
+    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu } from 'lucide-react';
+import ClientAuthBtn from '../AuthComponents/AuthButton.client';
 const Header = () => {
     return (
         <header className="w-full sticky top-0 backdrop-blur-sm pt-2 px-4 pb-4 flex align-middle justify-between items-center bg-slate-50 z-20">
@@ -51,13 +53,13 @@ const Header = () => {
 
             {/* menu Toggle Button for smalll screens */}
             <div className="flex gap-4 md:hidden">
-                <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                    <Link href="/login">Login</Link>
-                </Button>
+                <ClientAuthBtn />
 
                 {/* mobile menu */}
 
                 <Sheet>
+
+                    <SheetTitle hidden>Menu</SheetTitle>
                     <SheetTrigger className=" bg-transparent md:hidden">
                         <Menu className='w-6 h-6' />
                     </SheetTrigger>
@@ -75,6 +77,13 @@ const Header = () => {
                             <SheetClose asChild className=" bg-transparent border-b">
                                 <Link href="/" className="[&.active]:font-bold text-lg [&.active]:text-primary bg-secondary p-3 rounded-md [&.active]:bg-accent-foreground hover:bg-accent-foreground hover:text-primary">
                                     Home
+                                </Link>
+                            </SheetClose>
+
+                            <SheetClose asChild className=" bg-transparent border-b">
+
+                                <Link href="/events" className="[&.active]:font-bold text-lg [&.active]:text-primary bg-secondary p-3 rounded-md [&.active]:bg-accent-foreground hover:bg-accent-foreground hover:text-primary">
+                                    Events
                                 </Link>
                             </SheetClose>
 
