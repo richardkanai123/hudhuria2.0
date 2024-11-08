@@ -1,7 +1,7 @@
 import CitiesCarousel from "@/components/Custom/Events/CitiesCarousel";
-import UpcomingEventsLister from "@/components/Custom/Events/UpcomingEventsLister";
 import EventLoadingCard from "@/components/Custom/loaders/EventLoadingCard";
 import ContactForm from "@/components/Custom/nav/ContactForm";
+import UpcomingEventsLister from "@/components/Custom/Events/UpcomingEventsLister";
 import { Suspense } from "react";
 
 export default function Home() {

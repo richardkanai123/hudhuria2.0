@@ -1,14 +1,12 @@
 import CitiesCarousel from '@/components/Custom/Events/CitiesCarousel'
 import FiltredEventsLister from '@/components/Custom/Events/FiltredEventsLister'
+import EventLoadingCard from '@/components/Custom/loaders/EventLoadingCard'
 import { Event } from '@/lib/types'
 import React, { Suspense } from 'react'
 
 const EventsPage = async () => {
 
     const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
-
-    const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-    await delay(3000)
 
     const res = await fetch(eventsApiUrl, {
         method: "GET",
@@ -49,10 +47,7 @@ const EventsPage = async () => {
 
     return (
         <div className='w-full h-full px-4 py-2 flex flex-col align-middle justify-center'>
-
-            <h1 className='text-2xl font-bold text-primary'>Events</h1>
-
-            <Suspense fallback={<h1> Loading</h1>} >
+            <Suspense fallback={<EventLoadingCard />} >
                 <FiltredEventsLister events={eventsList} />
             </Suspense>
 

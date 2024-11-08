@@ -17,6 +17,7 @@ import { FormControl, Form, FormDescription, FormField, FormItem, FormLabel, For
 import { toast } from "react-toastify"
 import { TiTick } from "react-icons/ti";
 import { FaSpinner } from "react-icons/fa6"
+import { useRouter } from "next/navigation"
 
 const NewUserSchema = z.object({
     name: z.string().min(5, { message: "Too short, minimum is 5 characters" }),
@@ -49,6 +50,8 @@ export function SignUpForm() {
         }
     })
 
+    const Router = useRouter()
+
     const SignUpNewUser = async (data: z.infer<typeof NewUserSchema>) => {
         try {
             const UsersApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/users`
@@ -70,6 +73,9 @@ export function SignUpForm() {
                     icon: <TiTick />,
                 })
                 form.reset()
+                // redirect to login page
+                Router.push(`/login?email=${data.email}`)
+
             } else {
                 // set error message in the root of the form
                 form.setError("root", { message: responseData.message as string })

@@ -2,12 +2,11 @@
 import { Event } from '@/lib/types'
 import { useSearchParams } from 'next/navigation'
 import EventCard from './EventCard'
-import CitiesCarousel from './CitiesCarousel'
 const FiltredEventsLister = ({ events }: { events: Event[] | [] }) => {
     const searchParams = useSearchParams()
     const city = searchParams.get('city')
     const existingEvents = events.filter((event) => !event.isDeleted && event.isPublished)
-    const filteredEvents = city ? existingEvents.filter((event) => event.city.toLowerCase() === city.toLowerCase()) : existingEvents
+    const filteredEvents = city ? existingEvents.filter((event) => event.city.toLowerCase() === (city?.toLowerCase())) : existingEvents
 
     if (filteredEvents.length === 0) {
         return (
@@ -21,7 +20,9 @@ const FiltredEventsLister = ({ events }: { events: Event[] | [] }) => {
 
     return (
         <div className="w-full h-fit flex flex-col px-4 py-2">
-            <h1 className='text-xl font-bold text-primary'>Upcoming in {city?.toUpperCase() || 'all cities'}</h1>
+            {
+                city && <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Events in <span className='first-letter:uppercase '>{city.toLocaleUpperCase()}</span></h1>
+            }
             <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle  ">
                 {
                     filteredEvents.map((event) => (
@@ -30,7 +31,6 @@ const FiltredEventsLister = ({ events }: { events: Event[] | [] }) => {
                 }
             </div>
 
-            <CitiesCarousel />
         </div>
     )
 }

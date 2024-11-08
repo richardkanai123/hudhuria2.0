@@ -13,7 +13,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Menu } from 'lucide-react';
 import ClientAuthBtn from '../AuthComponents/AuthButton.client';
+import { useSession } from 'next-auth/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
 const Header = () => {
+
+
+
+    const session = useSession()
+    const Router = useRouter()
+
+    const avatarUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}&background=random`
+
     return (
         <header className="w-full sticky top-0 backdrop-blur-sm pt-2 px-4 pb-4 flex align-middle justify-between items-center bg-slate-50 z-20">
             {/* logo */}
@@ -26,7 +37,7 @@ const Header = () => {
                 <Link href="/" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
                     Home
                 </Link>
-                <Link href="/events?city=all" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
+                <Link href="/events" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
                     Events
                 </Link>
                 <Link href="/about" className="[&.active]:font-bold text-lg active:text-primary [&.active]:text-primary ">
@@ -37,23 +48,50 @@ const Header = () => {
                 </Link>
             </nav>
 
-            <div className="hidden md:flex gap-4 items-center justify-center">
-                <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                    <Link href="/login">Login</Link>
+            {
+                session.data?.user ?
+                    <div className="hidden md:flex gap-4 items-center justify-center">
+                        <Avatar onClick={() => {
+                            Router.push('/profile')
+                        }} className='hover:opacity-50 cursor-pointer '>
+                            <AvatarImage src={avatarUrl} />
+                            <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                        </Avatar>
 
-                </Button>
-                <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                    <Link href="/signup">
-                        Signup
-                    </Link>
+                        <ClientAuthBtn />
+                    </div>
+
+                    :
+                    <div className="hidden md:flex gap-4 items-center justify-center">
+                        <Button className='flex items-center align-middle justify-center ' asChild variant="default">
+                            <Link href="/login">Login</Link>
+
+                        </Button>
+                        <Button className='flex items-center align-middle justify-center ' asChild variant="default">
+                            <Link href="/signup">
+                                Signup
+                            </Link>
 
 
-                </Button>
-            </div>
+                        </Button>
+                    </div>
+            }
 
             {/* menu Toggle Button for smalll screens */}
             <div className="flex gap-4 md:hidden">
-                <ClientAuthBtn />
+                {
+                    session.data?.user ?
+                        <Avatar onClick={() => {
+                            Router.push('/profile')
+                        }} className='hover:opacity-50 cursor-pointer '>
+                            <AvatarImage src={avatarUrl} />
+                            <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                        </Avatar> :
+                        <Button className='flex items-center align-middle justify-center ' asChild variant="default">
+                            <Link href="/login">Login</Link>
+                        </Button>
+
+                }
 
                 {/* mobile menu */}
 
@@ -96,7 +134,7 @@ const Header = () => {
 
                             <SheetClose asChild className=" bg-transparent border-b">
 
-                                <Link href="/about" className="[&.active]:font-bold text-lg [&.active]:text-primary bg-secondary p-3 rounded-md [&.active]:bg-accent-foreground hover:bg-accent-foreground hover:text-primary">
+                                <Link href="/profile" className="[&.active]:font-bold text-lg [&.active]:text-primary bg-secondary p-3 rounded-md [&.active]:bg-accent-foreground hover:bg-accent-foreground hover:text-primary">
                                     Profile
                                 </Link>
 
@@ -109,6 +147,20 @@ const Header = () => {
                                 </Link>
 
                             </SheetClose>
+
+                            <SheetClose asChild className=" bg-transparent border-b">
+                                <div className="flex align-middle w-full gap-4 items-center justify-center">
+                                    <Avatar onClick={() => {
+                                        Router.push('/profile')
+                                    }} className='hover:opacity-50 cursor-pointer '>
+                                        <AvatarImage src={avatarUrl} />
+                                        <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                                    </Avatar>
+
+                                    <ClientAuthBtn />
+                                </div>
+                            </SheetClose>
+
                         </nav>
                     </SheetContent>
                 </Sheet>

@@ -42,16 +42,34 @@ const AuthOptions: NextAuthConfig = {
         signOut: '/login',
         newUser: '/signup',
     }, 
-    callbacks:{
-        async session({ session, user }) {
-            session.user = user
-            return session
-        },
+    callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.user = user
+                token.id = user.id
+                token.email = user.email
+                token.name = user.name
             }
             return token
+        },
+
+        async session({ session, token }) {
+            if (session?.user) {
+                session.user.email = token.email as string
+                session.user.id = token.id as string
+                session.user.name = token.name as string
+            }
+            return session
+        },
+
+        signIn: async ({ user }) => {
+            if (user) {
+                return true
+            }
+            return false
+        },
+        redirect: async ({ url, baseUrl }) => {
+            if (url.startsWith('/')) return `${baseUrl}${url}`
+            return baseUrl
         }
     },
     session: {

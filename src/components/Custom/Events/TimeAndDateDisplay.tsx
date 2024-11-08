@@ -28,11 +28,11 @@ const TimeAndDateDisplay = ({ startDate, endDate }: PropsType) => {
             <CardHeader className="text-xl text-primary font-bold flex"> <CalendarCheck className="w-6 h-6 mr-2" /> Time and Date </CardHeader>
             <div className='md:text-lg text-secondary-foreground tracking-wide'>
                 {
-                    comparedDatesResult === true ? <p>
+                    comparedDatesResult === true ? <p className='font-semibold text-center'>
                         {formatedStartDate?.formatedDate} from {formatedStartDate?.time} to {formatedEndDate?.time}
                     </p> :
                         <>
-                            <p>Start :{formatedStartDate?.formatedDate} at {formatedStartDate?.time} </p>
+                            <p className='font-semibold text-center'>Start :{formatedStartDate?.formatedDate} at {formatedStartDate?.time} </p>
                             <p>End : {formatedEndDate?.formatedDate} at {formatedEndDate?.time} </p>
                         </>
 

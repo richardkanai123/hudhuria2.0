@@ -10,13 +10,13 @@ const ClientAuthBtn = () => {
 
     if (session.status === 'authenticated') {
         return (
-            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" onClick={() => signOutUser()}>Sign Out</Button>
+            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" onClick={() => signOutUser().then(() => Router.push('/login'))}>Sign Out</Button>
         )
     }
 
     if (session.status === 'loading') {
         return (
-            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" disabled>Signing In...</Button>
+            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" disabled>Loading...</Button>
         )
     }
 

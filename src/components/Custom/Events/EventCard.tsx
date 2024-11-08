@@ -13,7 +13,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
     const truncatedDescription = eventDescription.slice(0, 100)
 
     return (
-        <Link href={`/events/${_id}`} className="flex-1 w-full md:min-w-[300px] max-w-[350px] max-h-[400px] aspect-square flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer shadow-sm bg-accent transition-all ease-in duration-700 group hover:shadow-md">
+        <Link prefetch href={`/events/${_id}`} className="flex-1 w-full md:min-w-[300px] max-w-[350px] max-h-[400px] aspect-square flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer shadow-sm bg-accent transition-all ease-in duration-700 group hover:shadow-md">
             {/* image */}
             <div className="w-full min-h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 relative">
                 <CloudImage image_id={image_id} />

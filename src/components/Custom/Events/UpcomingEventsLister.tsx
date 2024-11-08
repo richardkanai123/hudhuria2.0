@@ -1,12 +1,8 @@
 import { Event } from "@/lib/types"
 import EventCard from "./EventCard"
 
-const UpcomingEventsLister = async () => {
-
+const FetchEvents = async (): Promise<Response> => {
     const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
-
-    const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-    await delay(3000)
 
     const res = await fetch(eventsApiUrl, {
         method: "GET",
@@ -15,8 +11,12 @@ const UpcomingEventsLister = async () => {
         },
     })
 
-    const eventsList: Event[] | [] = await res.json()
+    return res
+}
+const UpcomingEventsLister = async () => {
 
+    const res = await FetchEvents()
+    const eventsList: Event[] | [] = await res.json()
 
     if (res.status !== 200) {
         return (
@@ -34,6 +34,14 @@ const UpcomingEventsLister = async () => {
 
     if (!eventsList || eventsList.length === 0) return <div>No upcoming events</div>
 
+    const FeaturedEvents = eventsList.filter((event) => event.isFeatured)
+    const FutureEvents = eventsList.filter((event) => {
+        const eventDate = new Date(event.startDate)
+        const currentDate = new Date()
+        return eventDate > currentDate
+    })
+
+
 
     return (
         <div className="w-full h-fit flex flex-col px-4 py-2">
@@ -41,11 +49,21 @@ const UpcomingEventsLister = async () => {
 
             <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle ">
                 {
-                    eventsList.map((event) => (
+                    FeaturedEvents.map((event) => (
                         event ? <EventCard key={event._id} eventData={event} /> : null
                     ))
                 }
             </div>
+            <h1 className="w-full text-3xl font-bold text-left text-primary mt-6 "> Upcoming Events</h1>
+
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle ">
+                {
+                    FutureEvents.filter((event) => event.isPublished && !event.isDeleted).map((event) => (
+                        event ? <EventCard key={event._id} eventData={event} /> : null
+                    ))
+                }
+            </div>
+
         </div>
     )
 }
