@@ -10,7 +10,7 @@ const ClientAuthBtn = () => {
 
     if (session.status === 'authenticated') {
         return (
-            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" onClick={async () => await signOutUser().then(() => Router.push('/login'))}>Sign Out</Button>
+            <Button className="w-full mt-2 mx-auto max-w-[250px] hover:bg-opacity-35 transition-all ease-linear" onClick={async () => await signOutUser()}>Sign Out</Button>
         )
     }
 

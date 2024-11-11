@@ -16,11 +16,14 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LoginUserByCredentials } from "@/lib/authHelpers";
-import { LoaderPinwheel } from "lucide-react";
+import { LoaderPinwheel, Router } from "lucide-react";
+import { AuthError } from "next-auth";
+import { signIn } from "next-auth/react";
 export function LoginForm() {
 
+    const Router = useRouter()
     // get email from search params
     const searchParams = useSearchParams()
     const emailparam = searchParams.get('email')
@@ -43,16 +46,37 @@ export function LoginForm() {
 
     const LoginNewUser = async (data: z.infer<typeof LoginFormSchema>) => {
         // send the form data to the server
-        try {
-            const res = await LoginUserByCredentials(data)
-            console.log(res)
-            if (res.error) {
-                form.setError("root", { message: res.error })
-            }
-        } catch (error) {
-            if (error instanceof Error) {
-                form.setError("root", { message: error.message })
+        // try {
+        // const res = await LoginUserByCredentials(data)
+        const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false })
+        console.log(res)
+        if (!res?.error) {
+            form.reset()
+            Router.back()
+            Router.refresh()
+        }
 
+        if (res?.error) {
+
+            switch (res?.error) {
+                case 'CredentialsSignin':
+                    form.setError("root", { message: 'Invalid email or password' })
+                    return { error: 'Invalid email or password' }
+                case 'AccessDenied':
+                    form.setError("root", { message: 'Access denied for this user' })
+                    return { error: 'Access denied for this user' }
+                case 'AccountNotLinked':
+                    form.setError("root", { message: 'Account not linked' })
+                    return { error: 'Account not linked' }
+                case 'InvalidCheck':
+                    form.setError("root", { message: 'Invalid check' })
+                    return { error: 'Invalid check' }
+                case 'MissingAdapter':
+                    form.setError("root", { message: 'Missing adapter' })
+                    return { error: 'Missing adapter' }
+                default:
+                    form.setError("root", { message: 'Unable to login! Please try again' })
+                    return { error: "Unable to login! Please try again" }
             }
         }
     }

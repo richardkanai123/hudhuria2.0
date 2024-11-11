@@ -1,21 +1,11 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
+import type { Metadata } from "next";
 import Header from "@/components/Custom/nav/Header";
 import Footer from "@/components/Custom/nav/Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SessionProvider from "@/components/Custom/AuthComponents/SessionProvider";
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
 
 export const metadata: Metadata = {
   title: "Hudhuria",
@@ -56,7 +46,7 @@ export const metadata: Metadata = {
     },
   },
 
-  // author: "Hudhuria",
+
   authors: [
     {
       name: "Richard Kanai",
@@ -64,7 +54,7 @@ export const metadata: Metadata = {
     },
     {
       name: "Hudhuria",
-      url: "https://www.hudhuria.com",
+      url: "https://github.com/richardkanai123/hudhuria2.0",
     }
   ]
 };
@@ -78,7 +68,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning >
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased w-full `}
+          className={` font-sans antialiased w-full `}
         >
           <div className="container mx-auto max-w-screen-2xl relative w-full min-h-screen max-h-fit">
             <Header />

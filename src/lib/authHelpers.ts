@@ -34,9 +34,9 @@ export async function SignInUser(email: string, password: string) {
 }
 
 export async function signOutUser() {
-    await NextAuthSignOut().then(() => {
-        
-        redirect('/login')
+    await NextAuthSignOut({
+        redirect: true,
+        redirectTo: '/'
     })
 }
 
@@ -66,14 +66,14 @@ export const LoginUserByCredentials = async (data: { email: string, password: st
         console.log(data)
         await NextAuthSignIn('credentials', {
             email: data.email,
-            password: data.password
-        }).then(() => {
-            redirect('/')
+            password: data.password,
+            redirect: false
         })
 
         return { error: null }
     
     } catch (error) {
+        console.log(error)  
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
@@ -84,6 +84,11 @@ export const LoginUserByCredentials = async (data: { email: string, password: st
                     return { error: 'Account not linked' }
                 case 'InvalidCheck':
                     return { error: 'Invalid check' }
+                case 'MissingAdapter':
+                    return { error: 'Missing adapter' }
+                default:
+                    return { error: error.message }
+                
             }
         }
 

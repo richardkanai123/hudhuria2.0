@@ -1,53 +1,84 @@
-import NextAuth, { NextAuthConfig, User } from "next-auth"
+import NextAuth, { AuthError, NextAuthConfig } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { fetchQuery } from 'convex/nextjs';
-import {api} from '../convex/_generated/api'
- import bcrypt from 'bcrypt'
+import { api } from '../convex/_generated/api'
+import bcrypt from 'bcrypt'
 
+
+
+const baseUrl = process.env.NEXT_PUBLIC_URL as string
 
 const AuthOptions: NextAuthConfig = {
+    // basePath: baseUrl,
     secret: process.env.NEXT_AUTH_SECRET,
     providers: [
         Credentials({
-          credentials: {
+            credentials: {
                 email: {},
-              password:{}
+                password: {}
             },
-            authorize: async (credentials) : Promise<User | null> => {
+            authorize: async (credentials): Promise<any | null> => {
 
-                if (!credentials?.email || !credentials?.password) {
-                    return null
+                try {
+                    if (!credentials?.email || !credentials?.password) {
+                        return null
+                    }
+
+                    const user = await fetchQuery(api.users.getUserByEmail, { email: credentials.email as string });
+                    if (!user) {
+                        return null
+                    }
+
+                    const passwordMatch = await bcrypt.compare(credentials.password as string, user.password);
+                    if (!passwordMatch) {
+                        return null
+                    }
+
+                    // remove password and _creationTime from user
+                    const userWithoutPassword = { ...user, password: undefined };
+                    return {
+                        id: userWithoutPassword._id,
+                        name: userWithoutPassword.name,
+                        email: userWithoutPassword.email,
+                        bio: userWithoutPassword.bio,
+                        isAdmin: userWithoutPassword.isAdmin,
+                        emailVerified: userWithoutPassword.isVerified
+                    }
+                } catch (error) {
+                    if (error instanceof AuthError) {
+                        switch (error.type) {
+                            case 'CredentialsSignin':
+                                return { error: error.message }
+                            case 'AccessDenied':
+                                return { error: 'Access denied for this user' }
+                            case 'AccountNotLinked':
+                                return { error: 'Account not linked' }
+                            case 'InvalidCheck':
+                                return { error: 'Invalid check' }
+                            case 'MissingAdapter':
+                                return { error: 'Missing adapter' }
+                        }
+                    }
+
                 }
-
-                const user = await fetchQuery(api.users.getUserByEmail, { email: credentials.email as string });
-                if (!user) {
-                    return null
-                }
-
-                const passwordMatch = await bcrypt.compare(credentials.password as string, user.password);
-                if (!passwordMatch) {
-                    return null
-                }
-
-                // remove password and _creationTime from user
-                const userWithoutPassword = { ...user, password: undefined, _creationTime: undefined };
-                return userWithoutPassword
             }
         })
 
     ],
-    
+
     pages: {
         signIn: '/login',
-        signOut: '/login',
         newUser: '/signup',
-    }, 
+    },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id
                 token.email = user.email
                 token.name = user.name
+                token.bio = user.bio
+                token.isAdmin = user.isAdmin
+                token.emailVerified = user.emailVerified as boolean
             }
             return token
         },
@@ -57,20 +88,12 @@ const AuthOptions: NextAuthConfig = {
                 session.user.email = token.email as string
                 session.user.id = token.id as string
                 session.user.name = token.name as string
+                session.userId = token.id as string
+                session.user.bio = token.bio as string
+                session.user.isAdmin = token.isAdmin as boolean
             }
             return session
         },
-
-        signIn: async ({ user }) => {
-            if (user) {
-                return true
-            }
-            return false
-        },
-        redirect: async ({ url, baseUrl }) => {
-            if (url.startsWith('/')) return `${baseUrl}${url}`
-            return baseUrl
-        }
     },
     session: {
         strategy: 'jwt'

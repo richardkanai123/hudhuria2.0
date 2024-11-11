@@ -16,6 +16,8 @@ import ClientAuthBtn from '../AuthComponents/AuthButton.client';
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useRouter } from 'next/navigation';
+import HeaderLinks from './Header-links';
+import { signOut } from 'next-auth/react';
 const Header = () => {
 
 
@@ -48,47 +50,27 @@ const Header = () => {
                 </Link>
             </nav>
 
-            {
-                session.data?.user ?
-                    <div className="hidden md:flex gap-4 items-center justify-center">
-                        <Avatar onClick={() => {
-                            Router.push('/profile')
-                        }} className='hover:opacity-50 cursor-pointer '>
-                            <AvatarImage src={avatarUrl} />
-                            <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
-                        </Avatar>
+            <div className="flex ">
+                <HeaderLinks session={session.data} status={session.status} />
+            </div>
 
-                        <ClientAuthBtn />
-                    </div>
-
-                    :
-                    <div className="hidden md:flex gap-4 items-center justify-center">
-                        <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                            <Link href="/login">Login</Link>
-
-                        </Button>
-                        <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                            <Link href="/signup">
-                                Signup
-                            </Link>
-
-
-                        </Button>
-                    </div>
-            }
-
-            {/* menu Toggle Button for smalll screens */}
+            {/* menu Toggle Button for small screens */}
             <div className="flex gap-4 md:hidden">
                 {
-                    session.data?.user ?
-                        <Avatar onClick={() => {
-                            Router.push('/profile')
-                        }} className='hover:opacity-50 cursor-pointer '>
-                            <AvatarImage src={avatarUrl} />
-                            <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
-                        </Avatar> :
+                    session.data?.user && session.status === 'authenticated' ?
+                        <div className="flex gap-2 items-center align-middle justify-center">
+                            <Avatar onClick={() => {
+                                Router.push('/profile')
+                            }} className='hover:opacity-50 cursor-pointer '>
+                                <AvatarImage src={avatarUrl} />
+                                <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                            </Avatar>
+
+                            <HeaderLinks session={session.data} status={session.status} />
+
+                        </div> :
                         <Button className='flex items-center align-middle justify-center ' asChild variant="default">
-                            <Link href="/login">Login</Link>
+                            <Link prefetch={false} href="/login">Login</Link>
                         </Button>
 
                 }
@@ -150,14 +132,21 @@ const Header = () => {
 
                             <SheetClose asChild className=" bg-transparent border-b">
                                 <div className="flex align-middle w-full gap-4 items-center justify-center">
-                                    <Avatar onClick={() => {
-                                        Router.push('/profile')
-                                    }} className='hover:opacity-50 cursor-pointer '>
-                                        <AvatarImage src={avatarUrl} />
-                                        <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
-                                    </Avatar>
+                                    {
+                                        session.data?.user && session.status === 'authenticated' ?
+                                            <div className="flex gap-2 items-center align-middle justify-center">
+                                                <Avatar onClick={() => {
+                                                    Router.push('/profile')
+                                                }} className='hover:opacity-50 cursor-pointer '>
+                                                    <AvatarImage src={avatarUrl} />
+                                                    <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                                                </Avatar>
+                                            </div> :
+                                            <Button className='w-full flex items-center align-middle justify-center ' asChild variant="default">
+                                                <Link prefetch={false} href="/login">Login</Link>
+                                            </Button>
+                                    }
 
-                                    <ClientAuthBtn />
                                 </div>
                             </SheetClose>
 
