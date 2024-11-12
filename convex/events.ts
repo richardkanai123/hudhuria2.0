@@ -30,6 +30,7 @@ export const AddNewEvent = mutation({
         isPublished: v.boolean(),
         isDeleted: v.boolean(),
         isFeatured: v.boolean(),
+        uploadedBy: v.id('usersTable'),
     },
     handler: async ({ db },  args ) => {
         const { eventTitle,
@@ -49,7 +50,8 @@ export const AddNewEvent = mutation({
         likedBy,
         isPublished,
         isDeleted,
-        isFeatured,
+            isFeatured,
+        uploadedBy
         } = args
         const newEvent = await db.insert('eventsTable', {
         eventTitle,
@@ -70,6 +72,8 @@ export const AddNewEvent = mutation({
         isPublished,
         isDeleted,
         isFeatured,
+        uploadedBy
+        
       });
       return newEvent;
     },
@@ -93,3 +97,17 @@ export const getEventById = query({
         return task;
     }
 })
+
+// get events by a certain user
+export const getEventsByUser = query({
+    args: { userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const userid = args.userid;
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const events = await ctx.db.query("eventsTable").filter(q => q.eq(q.field("uploadedBy"), userid)).collect();
+        return events;
+    }
+})
+    

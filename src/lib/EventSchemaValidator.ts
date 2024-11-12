@@ -1,14 +1,30 @@
 import { z } from 'zod';
+const fileSizeLimit = 5 * 1024 * 1024
 
 const eventSchema = z.object({
+  // file is an uploaded image file
+  File: z
+        .instanceof(File)
+        .refine(
+            (file) =>
+                [
+                    "image/png",
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/webp",
+
+                ].includes(file.type),
+            { message: "Invalid image file type" }
+        )
+        .refine((file) => file.size <= fileSizeLimit, {
+            message: "File size should not exceed 5MB",
+        }),
   eventTitle: z.string().min(1, 'Event title is required'),
   description: z.string().min(1, 'Event description is required'),
   location: z.string().min(1, 'Event location is required'),
   city: z.string().min(1, 'Event city is required'),
   startDate: z.string().min(1, 'Event start date is required'),
   endDate: z.string().min(1, 'Event end date is required'),
-  image_id: z.string().min(1, 'Event image ID is required'),
-  image_url: z.string().min(1, 'Event image URL is required'),
   category: z.string().min(1, 'Event category is required'),
   isPaid: z.boolean(),
   ticket_price: z.number(),

@@ -1,9 +1,12 @@
-'use client'
-import React from 'react'
+import CreateEventForm from '@/components/Custom/Events/CreateEventForm'
 
 const NewEventPage = () => {
     return (
-        <div>NewEventPage</div>
+        <div className="w-full p-2">
+            <h1 className="text-2xl font-bold mb-4">New Event</h1>
+
+            <CreateEventForm />
+        </div>
     )
 }
 

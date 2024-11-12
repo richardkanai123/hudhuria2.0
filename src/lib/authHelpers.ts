@@ -1,6 +1,6 @@
 'use server'
 import { signIn as NextAuthSignIn, signOut as NextAuthSignOut } from "@/Auth"
-import { AuthError } from "next-auth"
+import { AuthError, User } from "next-auth"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 
@@ -95,3 +95,6 @@ export const LoginUserByCredentials = async (data: { email: string, password: st
         throw error
     }
 }
+
+
+

@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * The `NewEvent` component is a React component that renders a form for creating a new event. It uses the `react-hook-form` library to manage the form state and validation, and the `zod` library to define the schema for the event data.
  *
@@ -5,6 +7,7 @@
  *
  * The `onSubmit` function is called when the form is submitted, and it logs the event data to the console.
  */
+
 
 import { Card } from "@/components/ui/card"
 import { z } from 'zod'
@@ -36,20 +39,40 @@ import {
 } from "@/components/ui/select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CalendarIcon, Loader2Icon } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import citiesInKenya from "@/lib/cities"
 import { Switch } from '@/components/ui/switch';
 import { TimePickerDemo } from "@/lib/time-picker-demo"
-import { useMemo, useRef, useState } from "react"
-import CustomCloudImageUploader from "@/lib/Cloudinary/Cloudinary-Image-Upload"
+import React, { useMemo, useRef, useState } from "react"
+// import CustomCloudImageUploader from "@/lib/Cloudinary/Cloudinary-Image-Upload"
 import { toast } from "react-toastify"
+import { InputProps } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { User } from "next-auth"
+
 
 // zod schema for event data
 const categories = eventCategories.map((item) => item.name)
+const fileSizeLimit = 5 * 1024 * 1024
 
 const NewEventSchema = z.object({
+    imageFile: z
+        .instanceof(File)
+        .refine(
+            (file) =>
+                [
+                    "image/png",
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/webp",
+
+                ].includes(file.type),
+            { message: "Invalid image file type" }
+        )
+        .refine((file) => file.size <= fileSizeLimit, {
+            message: "File size should not exceed 5MB",
+        }),
     title: z.string().min(10, "Title is required, at least 10 characters"),
     description: z.string().min(1, "Description is required"),
     category: z.enum(categories as [string, ...string[]]),
@@ -57,6 +80,7 @@ const NewEventSchema = z.object({
     venue: z.string().min(1, "Venue is required"),
     startDate: z.date().min(new Date(), 'Event cannot be in the past'),
     endDate: z.date().min(new Date(), 'Event cannot be in the past'),
+    organizer: z.string().min(1, "Organizer name is required"),
     ticket: z.object({
         price: z.number().nonnegative(),
         totalTickets: z.number().int().nonnegative(),
@@ -78,16 +102,19 @@ const NewEventSchema = z.object({
     }
 );
 
+export const GetUserDetailsFromApi = async () => {
+    const userUrl = 'http://localhost:3000/api/users/getCurrentUser'
+    const userRes = await fetch(userUrl)
+    const loggedUserData = await userRes.json()
+    if (userRes.status !== 200) {
+        return null
+    }
+    const SessionUser = loggedUserData.user as User
+    return SessionUser
+
+}
 
 const NewEvent = () => {
-    const [imageData, setImageData] = useState<{ publicId: string, url: string } | null>(null);
-    const eventFormRef = useRef<HTMLFormElement>(null);
-
-    const handleImageUpload = (data: { publicId: string, url: string }) => {
-        setImageData(data);
-    };
-
-
 
     const form = useForm<z.infer<typeof NewEventSchema>>({
         resolver: zodResolver(NewEventSchema),
@@ -102,25 +129,54 @@ const NewEvent = () => {
                 totalTickets: 0,
             },
             isPaidEvent: false,
+            organizer: ''
+
         },
         mode: 'onChange',
     });
 
-    const handleSubmit = form.handleSubmit(async (data) => {
+    const handleSubmit = form.handleSubmit(async (data: { title: string | Blob; description: string | Blob; category: string | Blob; city: string | Blob; venue: string | Blob; startDate: { toString: () => string | Blob }; endDate: { toString: () => string | Blob }; ticket: { price: { toString: () => string | Blob }; totalTickets: { toString: () => string | Blob } }; isPaidEvent: { toString: () => string | Blob }; imageFile: string | Blob; organizer: string | Blob }) => {
 
-        if (!imageData || !eventFormRef.current) {
-            toast.error("Please upload an banner image for the event");
-            return;
-        }
+
         try {
-            const eventData = {
-                ...data,
-                bannerid: imageData.publicId,
-                imageUrl: imageData.url,
+            const UserRes = await GetUserDetailsFromApi()
+            if (!UserRes) {
+                throw new Error('No User found, Please login first!')
+                // return;
             }
-            console.table(eventData);
+            const formSubmissionData = new FormData()
+            // append data into form data
+            formSubmissionData.append('eventTitle', data.title)
+            formSubmissionData.append('description', data.description)
+            formSubmissionData.append('category', data.category)
+            formSubmissionData.append('city', data.city)
+            formSubmissionData.append('location', data.venue)
+            formSubmissionData.append('startDate', data.startDate.toString())
+            formSubmissionData.append('endDate', data.endDate.toString())
+            formSubmissionData.append('ticketPrice', data.ticket.price.toString())
+            formSubmissionData.append('totalTickets', data.ticket.totalTickets.toString())
+            formSubmissionData.append('isPaid', data.isPaidEvent as unknown as string)
+            formSubmissionData.append('File', data.imageFile)
+            formSubmissionData.append('organizer', data.organizer)
+            formSubmissionData.append('uploadedBy', UserRes?.id as string)
             // TODO : Send the event data to the database
 
+            const newEventUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
+
+
+
+
+
+
+            const res = await fetch(newEventUrl, {
+                method: 'POST',
+                body: JSON.stringify(formSubmissionData),
+
+            })
+
+            const resBody = await res.json()
+
+            console.log(resBody.message)
             // TODO : redirect to preview page for the event to confirm publishing or not
 
         } catch (error) {
@@ -148,16 +204,35 @@ const NewEvent = () => {
         <div
             className="w-full flex flex-col items-center justify-center gap-4 mx-auto min-h-screen px-3 py-1 ">
             <Card className="w-full max-w-screen-lg p-6 rounded-sm">
-                <h1 className="text-2xl font-bold mb-4">New Event</h1>
-
                 <Form {...form}>
-                    <form ref={eventFormRef} onSubmit={handleSubmit} className="w-full space-y-8">
-                        <CustomCloudImageUploader
-                            eventFormData={eventFormRef.current ? new FormData(eventFormRef.current) : new FormData()}
-                            onImageUpload={handleImageUpload}
+                    <form onSubmit={handleSubmit} className="w-full space-y-8">
+
+                        <FormField
+                            control={form.control}
+                            name="imageFile"
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            render={({ field: { value, onChange, ...fieldProps } }) => (
+                                <FormItem>
+                                    <FormLabel>Cover Image</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...fieldProps}
+                                            type="file"
+                                            accept="image/png, image/jpeg, image/jpg, image/webp"
+                                            onChange={(event) =>
+                                                onChange(event.target.files && event.target.files[0])
+                                            }
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Upload an image for your event, only accepts png, jpeg, jpg, webp
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
 
-                        <fieldset title="General Details" className="grid grid-cols-1 md:grrid-cols-2 gap-4 items-center align-middle border p-2">
+                        <fieldset title="General Details" className="grid grid-cols-1 md:grrid-cols-2 gap-4 items-center align-middle border p-2 shadow-md pb-4">
 
                             <legend className="text-lg font-semibold  text-sky-700">General Details</legend>
                             <FormField
@@ -171,6 +246,24 @@ const NewEvent = () => {
                                         </FormControl>
                                         <FormDescription>
                                             Title or name of the event
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+
+                            <FormField
+                                control={form.control}
+                                name="organizer"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Organizer Name / Title</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Event Title" {...field} type="text" />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Title or name of the person or entity organizing the event
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -222,7 +315,7 @@ const NewEvent = () => {
 
                         </fieldset>
 
-                        <fieldset title="Venue and Time Details" className="grid grid-cols-1 md:grrid-cols-2 gap-4 items-center align-middle border p-2">
+                        <fieldset title="Venue and Time Details" className="grid grid-cols-1 md:grrid-cols-2 gap-4 items-center align-middle border p-2  shadow-md pb-4">
 
                             <legend className="text-lg font-semibold  text-sky-700">Venue and Time Details</legend>
 
@@ -365,7 +458,7 @@ const NewEvent = () => {
                         </fieldset>
 
                         {/* ticketing */}
-                        <fieldset title="Ticketing details" className="grid grid-cols-2 gap-4 items-center align-middle border p-2 transition-all ease-linear duration-700 delay-200 ">
+                        <fieldset title="Ticketing details" className="grid grid-cols-2 gap-4 items-center align-middle border p-2 transition-all ease-linear duration-700 delay-200  shadow-md pb-4 ">
                             <legend className='text-lg font-semibold  text-sky-700'>Ticketing</legend>
 
                             <FormField
@@ -442,7 +535,7 @@ const NewEvent = () => {
 
                         <Button
                             className="cursor-pointer"
-                            type="submit" disabled={!imageData}>
+                            type="submit" >
                             {form.formState.isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
                             Create Event</Button>
                     </form>

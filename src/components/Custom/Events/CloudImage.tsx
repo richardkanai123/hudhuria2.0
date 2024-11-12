@@ -1,4 +1,4 @@
-import React from 'react'
+'use client'
 import { myCld } from '@/lib/Cloudinary/cloudinary';
 import Image from 'next/image';
 const CloudImage = ({ image_id }: { image_id: string }) => {
