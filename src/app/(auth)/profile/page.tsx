@@ -1,11 +1,10 @@
 import { auth } from '@/Auth'
 import { LoginForm } from '@/components/Custom/AuthComponents/LoginForm'
-import SignOutBtn from '@/components/Custom/AuthComponents/SignOutBtn'
-import React from 'react'
-
+import ProfileCard from '@/components/Custom/AuthComponents/ProfileCard'
+import { Suspense } from 'react'
 const ProfilePage = async () => {
     const session = await auth()
-
+    const userid = session?.user.id
     if (!session) return (
         <div className='w-full h-screen flex flex-col align-middle items-center justify-center p-2'>
 
@@ -15,12 +14,17 @@ const ProfilePage = async () => {
     )
 
     return (
-        <div className='w-full h-screen flex flex-col align-middle items-center justify-center'>
-            <pre>
-                {JSON.stringify(session, null, 2)}
-            </pre>
+        <div className='w-full min-h-screen max-h-fit flex flex-col items-center align-middle  '>
 
-            <SignOutBtn />
+            <Suspense fallback={<div>Loading...</div>}>
+                <ProfileCard />
+            </Suspense>
+
+
+            <div className="w-full">
+                <h1>Attending Events</h1>
+                <h2>Your Uploads</h2>
+            </div>
         </div>
     )
 }

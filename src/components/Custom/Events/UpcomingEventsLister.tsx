@@ -2,6 +2,7 @@ import { Event } from "@/lib/types"
 import EventCard from "./EventCard"
 
 const FetchEvents = async (): Promise<Response> => {
+    'use server'
     const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
     const res = await fetch(eventsApiUrl, {
@@ -9,6 +10,9 @@ const FetchEvents = async (): Promise<Response> => {
         headers: {
             "Content-Type": "application/json",
         },
+        next: {
+            revalidate: 600,
+        }
     })
 
     return res

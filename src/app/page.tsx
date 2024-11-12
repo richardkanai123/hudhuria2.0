@@ -3,10 +3,13 @@ import EventLoadingCard from "@/components/Custom/loaders/EventLoadingCard";
 import ContactForm from "@/components/Custom/nav/ContactForm";
 import UpcomingEventsLister from "@/components/Custom/Events/UpcomingEventsLister";
 import { Suspense } from "react";
+import { auth } from "@/Auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-4 overflow-x-hidden">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-4 overflow-x-hidden  bg-opacity-5">
       {/* hero image */}
       <div style={{
         backgroundImage: `url('/conference_banner.jpg')`,
