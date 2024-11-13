@@ -70,7 +70,7 @@ export default function RootLayout({
         <body
           className={` font-sans antialiased w-full `}
         >
-          <div className="container mx-auto relative w-full min-h-screen max-h-fit">
+          <div className="w-full max-w-[1920px] mx-auto relative min-h-screen max-h-fit">
             <Header />
             {children}
             <Footer />

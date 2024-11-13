@@ -93,7 +93,7 @@ export function SignUpForm() {
 
 
     return (
-        <Card className="mx-auto w-full min-h-[75vh] max-w-[450px]  my-4">
+        <Card className="mx-auto w-full h-full max-w-[600px] my-4">
             <CardHeader>
                 <CardTitle className="text-xl">Sign Up</CardTitle>
                 <CardDescription className="text-xs">

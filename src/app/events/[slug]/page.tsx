@@ -55,7 +55,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
 
     return (
         <div className='w-full h-fit min-h-[75vh] flex flex-col items-center align-middle justify-center pt-2' >
-            <div className='w-full aspect-video max-h-[400px] relative object-contain'>
+            <div className='w-full aspect-video max-h-[400px] md:max-h-[500px] relative object-contain'>
                 <CloudImage image_id={image_id} />
 
             </div>

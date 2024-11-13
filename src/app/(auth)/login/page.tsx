@@ -30,7 +30,7 @@ const LoginPage = () => {
     }
 
     return (
-        <div className='w-full h-fit p-2'>
+        <div className='w-full min-h-[70vh] flex flex-col align-middle justify-center  max-h-fit p-2'>
             <h1 className="text-center text-sm">Welcome back</h1>
             <LoginForm />
         </div>
