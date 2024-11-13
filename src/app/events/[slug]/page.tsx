@@ -1,6 +1,5 @@
 import CloudImage from '@/components/Custom/Events/CloudImage';
 import { Event } from '@/lib/types';
-import React from 'react'
 import TimeAndDateDisplay from '@/components/Custom/Events/TimeAndDateDisplay';
 import LocationDetails from '@/components/Custom/Events/LocationDetails';
 import TicketCard from '@/components/Custom/Events/TicketCard';
@@ -46,6 +45,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
             <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]'>
                 <p className='text-xl'>Something went wrong</p>
                 <span className='text-sm'>{(await res.json()).message as string}</span>
+                <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
             </div>
         )
     }

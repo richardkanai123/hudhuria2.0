@@ -11,7 +11,7 @@ const FetchEvents = async (): Promise<Response> => {
             "Content-Type": "application/json",
         },
         next: {
-            revalidate: 600,
+            revalidate: 6000,
         }
     })
 
@@ -38,31 +38,38 @@ const UpcomingEventsLister = async () => {
 
     if (!eventsList || eventsList.length === 0) return <div>No upcoming events</div>
 
-    const FeaturedEvents = eventsList.filter((event) => event.isFeatured)
-    const FutureEvents = eventsList.filter((event) => {
+    const FeaturedEvents = eventsList.filter((event) => event.isFeatured === true)
+
+    const FutureEvents = eventsList.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).filter((event) => {
         const eventDate = new Date(event.startDate)
         const currentDate = new Date()
         return eventDate > currentDate
     })
 
+    const UpcomingNonFeaturedEvents = FutureEvents.filter((event) => !event.isFeatured)
+
 
 
     return (
         <div className="w-full h-fit flex flex-col px-4 py-2">
-            <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
+            {
+                FeaturedEvents.length > 0 && <>
+                    <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
 
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle ">
-                {
-                    FeaturedEvents.map((event) => (
-                        event ? <EventCard key={event._id} eventData={event} /> : null
-                    ))
-                }
-            </div>
+                    <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
+                        {
+                            FeaturedEvents.map((event) => (
+                                event ? <EventCard key={event._id} eventData={event} /> : null
+                            ))
+                        }
+                    </div>
+                </>
+            }
             <h1 className="w-full text-3xl font-bold text-left text-primary mt-6 "> Upcoming Events</h1>
 
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle ">
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
                 {
-                    FutureEvents.filter((event) => event.isPublished && !event.isDeleted).map((event) => (
+                    UpcomingNonFeaturedEvents.filter((event) => event.isPublished && !event.isDeleted).map((event) => (
                         event ? <EventCard key={event._id} eventData={event} /> : null
                     ))
                 }
