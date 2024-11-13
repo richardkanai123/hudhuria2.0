@@ -30,7 +30,8 @@ export default defineSchema({
         .index("by_city", ["city"])
         .index("by_category", ["category"])
         .index("by_organizer", ["organizer"])
-        .index("by_uploadedBy", ["uploadedBy"]),
+        .index("by_uploadedBy", ["uploadedBy"])
+        .index("by_slug", ["slug"]),
     
     
     paymentsTable: defineTable({

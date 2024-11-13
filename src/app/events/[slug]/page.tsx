@@ -5,19 +5,21 @@ import TimeAndDateDisplay from '@/components/Custom/Events/TimeAndDateDisplay';
 import LocationDetails from '@/components/Custom/Events/LocationDetails';
 import TicketCard from '@/components/Custom/Events/TicketCard';
 import AttendanceCard from '@/components/Custom/Events/AttendanceCard';
+import Link from 'next/link';
 
 
 
-const EventDetailsPage = async (props: { params: Promise<{ eventid: string }> }) => {
+const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) => {
     const params = await props.params;
-    const { eventid } = params;
+    const { slug } = params;
 
 
-    if (!eventid) {
+    if (!slug) {
         return (
             <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]'>
-                <p className='text-xl'>Something went wrong</p>
-                <span className='text-sm'>Missing eventid</span>
+                <p className='text-xl'>Something went wrong!</p>
+                <span className='text-sm'>Missing event</span>
+                <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
             </div>
         )
     }
@@ -25,12 +27,15 @@ const EventDetailsPage = async (props: { params: Promise<{ eventid: string }> })
 
     // get the event for the given id
 
-    const EventURL = 'http://localhost:3000/api/events'
-    const res = await fetch(`${EventURL}/${eventid}?eventid=${eventid}`, {
+    const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
+    const res = await fetch(`${EventURL}/${slug}?slug=${slug}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
+        next: {
+            tags: ['event', slug],
+        }
     })
 
     const event: Event | null = await res.json()

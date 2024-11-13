@@ -86,8 +86,8 @@ export async function POST(request: NextRequest) {
         )
 
         // create-slug from event title
-        const CreateEventSlug = (eventTitle: string) => { 
-            const slug = eventTitle.toLowerCase().replace(/\s+/g, '-');
+        const CreateEventSlug = (eventTitle: string, location: string, organizer: string) => { 
+            const slug = eventTitle.toLowerCase().replace(/\s+/g,'-')+`${location.toLowerCase()}`+'by'+`${organizer.toLowerCase()}`;
             return slug;
         }
 
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
             isFeatured: false,
             image_id: result.public_id,
             image_url: result.secure_url,
-            slug: CreateEventSlug(NewEventData.get('eventTitle') as string)
+            slug: CreateEventSlug(NewEventData.get('eventTitle') as string, NewEventData.get('location') as string, NewEventData.get('organizer') as string)
         }
 
         const { valid, error } = validateEventSchema(NewEventObject);

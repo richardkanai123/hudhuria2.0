@@ -21,4 +21,5 @@ export interface Event {
     isDeleted: boolean;
     isFeatured: boolean;
     _creationTime: string;
+    slug: string;
 }

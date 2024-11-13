@@ -101,6 +101,20 @@ export const getEventById = query({
     }
 })
 
+// getEvent by slug
+export const getEventBySlug = query({
+    args: { slug: v.string() },
+    handler: async (ctx, args) => {
+        const slug = args.slug;
+        if (typeof slug !== 'string' || !slug) {
+            throw new Error("Invalid slug");
+        }
+        const event = await ctx.db.query("eventsTable").filter(q => q.eq(q.field("slug"), slug)).collect();
+        return event;
+    }
+})
+
+
 // get events by a certain user
 export const getEventsByUser = query({
     args: { userid: v.id("usersTable") },
