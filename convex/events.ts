@@ -31,6 +31,7 @@ export const AddNewEvent = mutation({
         isDeleted: v.boolean(),
         isFeatured: v.boolean(),
         uploadedBy: v.id('usersTable'),
+        slug: v.string(),
     },
     handler: async ({ db },  args ) => {
         const { eventTitle,
@@ -51,7 +52,8 @@ export const AddNewEvent = mutation({
         isPublished,
         isDeleted,
             isFeatured,
-        uploadedBy
+            uploadedBy,
+        slug
         } = args
         const newEvent = await db.insert('eventsTable', {
         eventTitle,
@@ -72,7 +74,8 @@ export const AddNewEvent = mutation({
         isPublished,
         isDeleted,
         isFeatured,
-        uploadedBy
+            uploadedBy,
+        slug
         
       });
       return newEvent;

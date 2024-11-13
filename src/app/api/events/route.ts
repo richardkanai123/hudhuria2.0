@@ -5,8 +5,7 @@ import { fetchMutation, preloadQuery } from "convex/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { validateEventSchema } from "@/lib/EventSchemaValidator";
 import { revalidatePath } from "next/cache";
-import { v2 as cloudinary, UploadStream } from 'cloudinary'
-import { CloudinaryUploadWidgetResults } from "next-cloudinary";
+import { v2 as cloudinary } from 'cloudinary'
 import { Id } from "../../../../convex/_generated/dataModel";
 
 
@@ -16,8 +15,9 @@ interface CloudinaryUploadResult {
     [key: string]: any
 }
 
+const fileSizeLimit = 5 * 1024 * 1024
+
 export async function GET(request: NextRequest) {
-    console.log(request.url)
 
     try {
         const events = await preloadQuery(api.events.getAllEvents);
@@ -53,21 +53,18 @@ export async function POST(request: NextRequest) {
 
     try {
 
-        const bodyData =await request.json();
-        console.log(bodyData)
+        const NewEventData = await request.formData()
 
-        const { valid, error } = validateEventSchema(bodyData);
-        if (!valid) {
-            return NextResponse.json({ message: error as string }, { status: 400 })
-        }
-
-        // upload image to cloudinary
-
-        const imageFile = bodyData.get('File') as File;
-
+        const imageFile = NewEventData.get('imageFile') as File;
         if (!imageFile) {
             return NextResponse.json({ message: "Image file is required" }, { status: 400 })
         }
+
+        // check file size
+        if (imageFile.size > fileSizeLimit) {
+            return NextResponse.json({ message: "File size should not exceed 5MB" }, { status: 400 })
+        }
+
         const bytes = await imageFile.arrayBuffer()
         const buffer = Buffer.from(bytes)
 
@@ -75,7 +72,10 @@ export async function POST(request: NextRequest) {
         const result = await new Promise<CloudinaryUploadResult>(
             (resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    { folder: "next-cloudinary-uploads" },
+                    {
+                        folder: "hudhuria",
+                        allowed_formats: ["jpg", "png", "jpeg", "webp"]
+                     },
                     (error, result) => {
                         if (error) reject(error);
                         else resolve(result as CloudinaryUploadResult);
@@ -85,32 +85,41 @@ export async function POST(request: NextRequest) {
             }
         )
 
-        const eventData = {
-            eventTitle: bodyData.get('eventTitle') as string,
-            description: bodyData.get('description') as string,
-            location: bodyData.get('location') as string,
-            city: bodyData.get('city') as string,
-            startDate: bodyData.get('startDate') as string,
-            endDate: bodyData.get('endDate') as string,
-            image_id: result.public_id,
-            image_url: result.secure_url as string,
-            category: bodyData.get('category') as string,
-            isPaid: bodyData.get('isPaid') ==='true'? true : false,
-            ticket_price: bodyData.get('ticket_price') as unknown as number,
-            ticket_available: bodyData.get('ticket_available')  as unknown as number,
-            organizer: bodyData.get('organizer')  as unknown as string,
+        // create-slug from event title
+        const CreateEventSlug = (eventTitle: string) => { 
+            const slug = eventTitle.toLowerCase().replace(/\s+/g, '-');
+            return slug;
+        }
+
+        const NewEventObject = {
+            eventTitle: NewEventData.get('eventTitle') as string,
+            description: NewEventData.get('description') as string,
+            location: NewEventData.get('location') as string,
+            city: NewEventData.get('city') as string,
+            isPaid: NewEventData.get('isPaid') === 'true' ? true : false,
+            startDate: NewEventData.get('startDate') as string,
+            endDate: NewEventData.get('endDate') as string,
+            category: NewEventData.get('category') as string,
+            organizer: NewEventData.get('organizer') as string,
+            ticket_available: parseInt(NewEventData.get('totalTickets') as string),
+            ticket_price: parseInt(NewEventData.get('ticketPrice') as string),
+            uploadedBy: NewEventData.get('uploadedBy') as Id<"usersTable">,
+            attendees: [],
+            likedBy: [],
             isPublished: true,
             isDeleted: false,
             isFeatured: false,
-            uploadedBy: bodyData.get('uploadedBy') as unknown as Id<"usersTable">,
-            attendees: [],
-            likedBy: []
+            image_id: result.public_id,
+            image_url: result.secure_url,
+            slug: CreateEventSlug(NewEventData.get('eventTitle') as string)
         }
 
+        const { valid, error } = validateEventSchema(NewEventObject);
+        if (!valid) {
+            return NextResponse.json({ message: error as string }, { status: 400 })
+        }
 
-        const NewEvent = await fetchMutation(api.events.AddNewEvent, eventData);
-
-
+        const NewEvent = await fetchMutation(api.events.AddNewEvent, NewEventObject);
 
         if (!NewEvent) {
             return NextResponse.json({ message: `Failed to add new event` }, { status: 400 })
@@ -121,7 +130,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: `Added new event!` }, { status: 201 })
 
     } catch (error) {
-        console.log(error)
         if (error instanceof Error) {
             return NextResponse.json({ message: error.message }, { status: 500 })
         } else {

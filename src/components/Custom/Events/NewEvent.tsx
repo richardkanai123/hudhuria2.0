@@ -1,5 +1,4 @@
 'use client'
-
 /**
  * The `NewEvent` component is a React component that renders a form for creating a new event. It uses the `react-hook-form` library to manage the form state and validation, and the `zod` library to define the schema for the event data.
  *
@@ -44,10 +43,8 @@ import { Calendar } from "@/components/ui/calendar"
 import citiesInKenya from "@/lib/cities"
 import { Switch } from '@/components/ui/switch';
 import { TimePickerDemo } from "@/lib/time-picker-demo"
-import React, { useMemo, useRef, useState } from "react"
-// import CustomCloudImageUploader from "@/lib/Cloudinary/Cloudinary-Image-Upload"
+import React, { useMemo } from "react"
 import { toast } from "react-toastify"
-import { InputProps } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { User } from "next-auth"
 
@@ -81,10 +78,8 @@ const NewEventSchema = z.object({
     startDate: z.date().min(new Date(), 'Event cannot be in the past'),
     endDate: z.date().min(new Date(), 'Event cannot be in the past'),
     organizer: z.string().min(1, "Organizer name is required"),
-    ticket: z.object({
-        price: z.number().nonnegative(),
-        totalTickets: z.number().int().nonnegative(),
-    }),
+    ticketPrice: z.number().min(0, "Ticket price must be greater than zero").optional(),
+    totalTickets: z.number().int().min(0, "Total tickets must be greater than zero").optional(),
     isPaidEvent: z.boolean().default(false),
 }).refine(
     (data) => data.startDate < data.endDate, // Ensure startDate is before endDate
@@ -95,7 +90,7 @@ const NewEventSchema = z.object({
 
 ).refine(
     (data) =>
-        !data.isPaidEvent || (data.ticket.price > 0 && data.ticket.totalTickets > 0), // Ensure price and totalTickets > 0 if event is paid
+        !data.isPaidEvent || (data.ticketPrice as number > 0 && data.totalTickets as number > 0), // Ensure price and totalTickets > 0 if event is paid
     {
         path: ["isPaidEvent"], // Where the error message will be displayed
         message: "For paid events, ticket price and total tickets must be greater than zero",
@@ -124,10 +119,8 @@ const NewEvent = () => {
             category: '',
             city: '',
             venue: '',
-            ticket: {
-                price: 0,
-                totalTickets: 0,
-            },
+            ticketPrice: 0,
+            totalTickets: 0,
             isPaidEvent: false,
             organizer: ''
 
@@ -135,48 +128,47 @@ const NewEvent = () => {
         mode: 'onChange',
     });
 
-    const handleSubmit = form.handleSubmit(async (data: { title: string | Blob; description: string | Blob; category: string | Blob; city: string | Blob; venue: string | Blob; startDate: { toString: () => string | Blob }; endDate: { toString: () => string | Blob }; ticket: { price: { toString: () => string | Blob }; totalTickets: { toString: () => string | Blob } }; isPaidEvent: { toString: () => string | Blob }; imageFile: string | Blob; organizer: string | Blob }) => {
+    const handleSubmit = form.handleSubmit(async (data: z.infer<typeof NewEventSchema>) => {
 
 
         try {
             const UserRes = await GetUserDetailsFromApi()
             if (!UserRes) {
                 throw new Error('No User found, Please login first!')
-                // return;
             }
-            const formSubmissionData = new FormData()
-            // append data into form data
-            formSubmissionData.append('eventTitle', data.title)
-            formSubmissionData.append('description', data.description)
-            formSubmissionData.append('category', data.category)
-            formSubmissionData.append('city', data.city)
-            formSubmissionData.append('location', data.venue)
-            formSubmissionData.append('startDate', data.startDate.toString())
-            formSubmissionData.append('endDate', data.endDate.toString())
-            formSubmissionData.append('ticketPrice', data.ticket.price.toString())
-            formSubmissionData.append('totalTickets', data.ticket.totalTickets.toString())
-            formSubmissionData.append('isPaid', data.isPaidEvent as unknown as string)
-            formSubmissionData.append('File', data.imageFile)
-            formSubmissionData.append('organizer', data.organizer)
-            formSubmissionData.append('uploadedBy', UserRes?.id as string)
-            // TODO : Send the event data to the database
 
+
+            // TODO : Send the event data to the database
             const newEventUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
 
-
-
-
-
+            const formData = new FormData()
+            formData.append('imageFile', data.imageFile)
+            formData.append('eventTitle', data.title)
+            formData.append('description', data.description)
+            formData.append('category', data.category)
+            formData.append('city', data.city)
+            formData.append('location', data.venue)
+            formData.append('startDate', data.startDate.toISOString())
+            formData.append('endDate', data.endDate.toISOString())
+            formData.append('organizer', data.organizer)
+            formData.append('isPaid', data.isPaidEvent ? 'true' : 'false')
+            formData.append('ticketPrice', data.isPaidEvent ? data.ticketPrice as unknown as string : '0')
+            formData.append('totalTickets', data.isPaidEvent ? data.totalTickets as unknown as string : '0')
+            formData.append('uploadedBy', UserRes.id as string)
             const res = await fetch(newEventUrl, {
                 method: 'POST',
-                body: JSON.stringify(formSubmissionData),
+                body: formData,
 
             })
-
             const resBody = await res.json()
 
-            console.log(resBody.message)
+            if (res.status !== 201) {
+                form.setError('root', { message: resBody.message })
+            }
+
+            toast.success("Event created successfully");
+            form.reset();
             // TODO : redirect to preview page for the event to confirm publishing or not
 
         } catch (error) {
@@ -485,7 +477,7 @@ const NewEvent = () => {
                                     <aside className="flex flex-col md:flex-row items-start align-middle justify-center gap-4 flex-wrap" >
                                         <FormField
                                             control={form.control}
-                                            name="ticket.price"
+                                            name="ticketPrice"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Ticket Price</FormLabel>
@@ -505,7 +497,7 @@ const NewEvent = () => {
 
                                         <FormField
                                             control={form.control}
-                                            name="ticket.totalTickets"
+                                            name="totalTickets"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Available Tickets</FormLabel>
@@ -534,10 +526,12 @@ const NewEvent = () => {
                         }
 
                         <Button
+                            disabled={form.formState.isSubmitting || !form.formState.isValid}
                             className="cursor-pointer"
                             type="submit" >
-                            {form.formState.isLoading && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
-                            Create Event</Button>
+                            {form.formState.isSubmitting && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+                            Create Event
+                        </Button>
                     </form>
                 </Form>
             </Card>

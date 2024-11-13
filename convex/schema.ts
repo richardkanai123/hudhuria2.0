@@ -23,8 +23,8 @@ export default defineSchema({
         isPublished: v.boolean(),
         isDeleted: v.boolean(),
         isFeatured: v.boolean(),
-        // userid of the user who uploaded the event
         uploadedBy: v.id('usersTable'),
+        slug: v.string(),
     })
         .index("by_event_title", ["eventTitle"])
         .index("by_city", ["city"])

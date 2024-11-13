@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { compareDates, formatDateToReadableVersion } from '@/lib/utils';
 import { CalendarCheck, Timer } from 'lucide-react';
@@ -33,7 +32,7 @@ const TimeAndDateDisplay = ({ startDate, endDate }: PropsType) => {
                     </p> :
                         <>
                             <p className='font-semibold text-center'>Start :{formatedStartDate?.formatedDate} at {formatedStartDate?.time} </p>
-                            <p>End : {formatedEndDate?.formatedDate} at {formatedEndDate?.time} </p>
+                            <p className='font-semibold text-center'>End : {formatedEndDate?.formatedDate} at {formatedEndDate?.time} </p>
                         </>
 
                 }
