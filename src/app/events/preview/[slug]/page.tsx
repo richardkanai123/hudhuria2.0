@@ -46,7 +46,7 @@ const EventPreviewPage = async ({ params }: { params: Promise<{ slug: string }> 
         )
     }
 
-    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, ticket_available, location, isPublished, isFeatured } = event
+    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, ticket_available, location, isPublished, isFeatured, uploadedBy } = event
 
 
     return (
@@ -65,7 +65,7 @@ const EventPreviewPage = async ({ params }: { params: Promise<{ slug: string }> 
                 <TimeAndDateDisplay startDate={startDate} endDate={endDate} />
             </div>
 
-            <EventPreviewButtons isPublished={isPublished} eventID={_id} isFeatured={isFeatured} />
+            <EventPreviewButtons slug={slug} isPublished={isPublished} owerID={uploadedBy} eventID={_id} isFeatured={isFeatured} />
         </div>
     );
 }

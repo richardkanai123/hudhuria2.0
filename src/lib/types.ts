@@ -22,4 +22,5 @@ export interface Event {
     isFeatured: boolean;
     _creationTime: string;
     slug: string;
+    uploadedBy: Id<"usersTable">
 }

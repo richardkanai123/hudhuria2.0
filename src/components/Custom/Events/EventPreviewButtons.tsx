@@ -26,27 +26,35 @@ type PropsType = {
     eventID: string,
     isPublished: boolean,
     isFeatured: boolean
+    slug: string
+    owerID: string
 }
-const EventPreviewButtons = ({ eventID, isPublished, isFeatured }: PropsType) => {
+const EventPreviewButtons = ({ eventID, isPublished, isFeatured, slug, owerID }: PropsType) => {
 
     const session = useSession()
     const Router = useRouter()
     const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
     const deleteEvent = async () => {
-        const res = await fetch(`${EventURL}/${eventID}?slug=${eventID}`, {
+        const res = await fetch(`${EventURL}/update/delete/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
             next: {
-                tags: ['event', eventID],
+                tags: ['events', slug],
             }
         })
 
-        if (res.ok) {
-            Router.push('/events')
+        const ReposeMessage = await res.json()
+
+        if (res.status !== 200) {
+            toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
         }
+
+        toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
+
+        Router.replace('/events')
     }
 
     const UnpublishEvent = async () => {
@@ -132,12 +140,18 @@ const EventPreviewButtons = ({ eventID, isPublished, isFeatured }: PropsType) =>
 
     }
 
+    if (owerID !== session.data?.user?.id) {
+        return null
+    }
+
     return (
         <div className="w-full max-w-fit gap-4  mx-auto flex flex-col md:flex-row items-center align-middle justify-center px-4 py-2">
-
-            <Button size='lg' className="w-full max-w-[250px] mx-auto hover:bg-opacity-35 transition-all ease-linear">
-                <FaCrown className="w-4 h-4 inline-block mr-2 text-yellow-300" /> Promote Event
-            </Button>
+            {
+                !isFeatured &&
+                <Button size='lg' className="w-full max-w-[250px] mx-auto hover:bg-opacity-35 transition-all ease-linear">
+                    <FaCrown className="w-4 h-4 inline-block mr-2 text-yellow-300" /> Promote Event
+                </Button>
+            }
 
             <Button onClick={() => Router.push(`/events/edit/${eventID}`)} size='lg' className="w-full max-w-[250px] bg-lime-700 mx-auto hover:bg-opacity-35 transition-all ease-linear">
                 <MdEditDocument className="w-4 h-4 inline-block mr-2" /> Edit Event
