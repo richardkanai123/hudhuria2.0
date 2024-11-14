@@ -68,7 +68,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
                     {eventTitle}
                 </h1>
                 {
-                    Session?.user.id === uploadedBy ? (
+                    Session?.user.id as string === uploadedBy ? (
                         <EventPreviewButtons eventID={_id} isPublished={event.isPublished} isFeatured={event.isFeatured} slug={event.slug} owerID={event.uploadedBy} />
                     ) : null
                 }

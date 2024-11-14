@@ -1,5 +1,4 @@
-import { Event } from "@/lib/types"
-import EventCard from "./EventCard"
+
 
 /**
  * Fetches events from the API.
@@ -30,6 +29,9 @@ const FetchEvents = async (): Promise<Response> => {
  *
  * @returns {JSX.Element} A JSX element containing a list of upcoming events.
  */
+
+import { Event } from "@/lib/types"
+import EventCard from "./EventCard"
 const UpcomingEventsLister = async () => {
 
     const res = await FetchEvents()

@@ -98,13 +98,13 @@ export const LoginUserByCredentials = async (data: { email: string, password: st
 
 
 
-export const GetUserDetailsFromServer = async () => {
-    const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
-    const userRes = await fetch(userUrl)
-    const loggedUserData = await userRes.json()
-    if (userRes.status !== 200) {
-        return null
-    }
-    const SessionUser = loggedUserData.user as User
-    return SessionUser
-}
+// export const GetUserDetailsFromServer = async () => {
+//     const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
+//     const userRes = await fetch(userUrl)
+//     const loggedUserData = await userRes.json()
+//     if (userRes.status !== 200) {
+//         return null
+//     }
+//     const SessionUser = loggedUserData.user as User
+//     return SessionUser
+// }

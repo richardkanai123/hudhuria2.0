@@ -48,6 +48,7 @@ import { toast } from "react-toastify"
 import { cn } from "@/lib/utils";
 import { User } from "next-auth"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 
 // zod schema for event data
@@ -98,21 +99,22 @@ const NewEventSchema = z.object({
     }
 );
 
-export const GetUserDetailsFromApi = async () => {
-    const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
-    const userRes = await fetch(userUrl)
-    const loggedUserData = await userRes.json()
-    if (userRes.status !== 200) {
-        return null
-    }
-    const SessionUser = loggedUserData.user as User
-    return SessionUser
+// export const GetUserDetailsFromApi = async () => {
+//     const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
+//     const userRes = await fetch(userUrl)
+//     const loggedUserData = await userRes.json()
+//     if (userRes.status !== 200) {
+//         return null
+//     }
+//     const SessionUser = loggedUserData.user as User
+//     return SessionUser
 
-}
+// }
 
 const NewEvent = () => {
 
     const Router = useRouter()
+    const session = useSession()
 
     const form = useForm<z.infer<typeof NewEventSchema>>({
         resolver: zodResolver(NewEventSchema),
@@ -135,10 +137,11 @@ const NewEvent = () => {
 
 
         try {
-            const UserRes = await GetUserDetailsFromApi()
-            if (!UserRes) {
+            if (!session.data?.user) {
                 throw new Error('No User found, Please login first!')
+                return;
             }
+
 
 
             // TODO : Send the event data to the database
@@ -158,7 +161,7 @@ const NewEvent = () => {
             formData.append('isPaid', data.isPaidEvent ? 'true' : 'false')
             formData.append('ticketPrice', data.isPaidEvent ? data.ticketPrice as unknown as string : '0')
             formData.append('totalTickets', data.isPaidEvent ? data.totalTickets as unknown as string : '0')
-            formData.append('uploadedBy', UserRes.id as string)
+            formData.append('uploadedBy', session.data?.user?.id as string)
             const res = await fetch(newEventUrl, {
                 method: 'POST',
                 body: formData,
