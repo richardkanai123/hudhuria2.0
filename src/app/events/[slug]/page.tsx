@@ -5,12 +5,15 @@ import LocationDetails from '@/components/Custom/Events/LocationDetails';
 import TicketCard from '@/components/Custom/Events/TicketCard';
 import AttendanceCard from '@/components/Custom/Events/AttendanceCard';
 import Link from 'next/link';
+import { auth } from '@/Auth';
+import EventPreviewButtons from '@/components/Custom/Events/EventPreviewButtons';
 
 
 
 const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) => {
     const params = await props.params;
     const { slug } = params;
+    const Session = await auth()
 
 
     if (!slug) {
@@ -50,7 +53,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
         )
     }
 
-    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, attendees, ticket_available, location } = event
+    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, attendees, ticket_available, location, uploadedBy } = event
 
 
     return (
@@ -64,16 +67,26 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
                 <h1 className="text-2xl md:text-4xl font-extrabold text-primary md:leading-relaxed tracking-wide block mb-4">
                     {eventTitle}
                 </h1>
+                {
+                    Session?.user.id === uploadedBy ? (
+                        <EventPreviewButtons eventID={_id} isPublished={event.isPublished} isFeatured={event.isFeatured} slug={event.slug} owerID={event.uploadedBy} />
+                    ) : null
+                }
+                <TicketCard isPaid={isPaid} price={ticket_price} ticket_available={ticket_available} eventID={_id} />
                 <p className='max-w-screen-lg text-lg text-secondary-foreground tracking-wide mb-2'>{description} </p>
 
-                <AttendanceCard attendees={attendees} id={_id} />
 
-                <TicketCard isPaid={isPaid} price={ticket_price} ticket_available={ticket_available} eventID={_id} />
+                <AttendanceCard isOwnerViewing={Session?.user.id === uploadedBy} attendees={attendees} id={_id} />
+
 
                 <TimeAndDateDisplay startDate={startDate} endDate={endDate} />
 
                 <LocationDetails city={city} venue={location} />
+
+
             </div>
+
+
 
         </div >
     );

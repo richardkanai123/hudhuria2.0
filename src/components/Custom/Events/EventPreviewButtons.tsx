@@ -59,84 +59,111 @@ const EventPreviewButtons = ({ eventID, isPublished, isFeatured, slug, owerID }:
 
     const UnpublishEvent = async () => {
 
-        if (!session.data?.user) {
-            toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
-            return
-        }
-        const res = await fetch(`${EventURL}/update/unpublish/?eventid=${eventID}&userid=${session.data.user?.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            next: {
-                tags: ['event', eventID],
+        try {
+            if (!session.data?.user) {
+                toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+                return
             }
-        })
+            const res = await fetch(`${EventURL}/update/unpublish/?eventid=${eventID}&userid=${session.data.user?.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                next: {
+                    tags: ['events', slug],
+                }
+            })
 
-        const ReposeMessage = await res.json()
+            const ReposeMessage = await res.json()
 
-        if (res.status !== 200) {
-            toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            if (res.status !== 200) {
+                toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+
+            toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
+
+            Router.refresh()
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+            else {
+                toast.error('Unknown error has occured', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
         }
-
-        toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
-
-        Router.refresh()
     }
 
 
     const PublishEvent = async () => {
 
-        if (!session.data?.user) {
-            toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
-            return
-        }
-        const res = await fetch(`${EventURL}/update/publish/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            next: {
-                tags: ['event', eventID],
+        try {
+            if (!session.data?.user) {
+                toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+                return
             }
-        })
+            const res = await fetch(`${EventURL}/update/publish/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                next: {
+                    tags: ['events', slug],
+                }
+            })
 
-        const ReposeMessage = await res.json()
+            const ReposeMessage = await res.json()
 
-        if (res.status !== 200) {
-            toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            if (res.status !== 200) {
+                toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+
+            toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
+
+            Router.replace(`/events/${ReposeMessage.slug as string}`)
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+            else {
+                toast.error('Unknown error has occured', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
         }
-
-        toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
-
-        Router.replace(`/events/${ReposeMessage.slug as string}`)
     }
 
 
     const DeleteEvent = async () => {
 
-        if (!session.data?.user) {
-            toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
-            return;
-        }
-
-        const res = await fetch(`${EventURL}/update/delete/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            next: {
-                tags: ['event', eventID],
+        try {
+            if (!session.data?.user) {
+                toast.info('You are not logged in!', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+                return;
             }
-        })
 
-        if (res.status !== 200) {
-            toast.error('Failed to delete event', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            const res = await fetch(`${EventURL}/update/delete/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                next: {
+                    tags: ['event', eventID],
+                }
+            })
+
+            if (res.status !== 200) {
+                toast.error('Failed to delete event', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+
+            toast.success('Event deleted successfully', { theme: 'colored', position: 'top-center', icon: <Trash2Icon /> })
+
+            Router.push('/events')
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
+            else {
+                toast.error('Unknown error has occured', { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
+            }
         }
-
-        toast.success('Event deleted successfully', { theme: 'colored', position: 'top-center', icon: <Trash2Icon /> })
-
-        Router.push('/events')
 
     }
 
@@ -179,14 +206,14 @@ const EventPreviewButtons = ({ eventID, isPublished, isFeatured, slug, owerID }:
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogTitle>You are about to delete this event</AlertDialogTitle>
                         <AlertDialogDescription>
                             This action cannot be undone. This will permanently delete this event.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteEvent()}>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => DeleteEvent()}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

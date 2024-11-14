@@ -13,6 +13,9 @@ const EventsPage = async () => {
         headers: {
             "Content-Type": "application/json",
         },
+        next: {
+            tags: ['events'],
+        },
     })
 
     const eventsList: Event[] | [] = await res.json()

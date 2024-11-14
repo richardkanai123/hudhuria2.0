@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../../../convex/_generated/api"; 
 import { fetchMutation } from "convex/nextjs";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { Id } from "../../../../../../convex/_generated/dataModel";
 
 
@@ -43,6 +43,7 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: "Unable to delete event" }, { status: 404 });
         }
         revalidatePath('/events');
+        revalidateTag('events');
         return NextResponse.json({ message: "Event deleted" }, { status: 200 });
     } catch (error) {
         if (error instanceof Error) {
