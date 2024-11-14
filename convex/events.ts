@@ -127,4 +127,109 @@ export const getEventsByUser = query({
         return events;
     }
 })
+
+// delete an event given its id
+export const deleteEvent = mutation({
+    args: { eventid: v.id("eventsTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        await ctx.db.patch(eventid, { isDeleted: true });
+        return true;
+    }
+})
+
+// unpublish an event given its id
+export const unpublishEvent = mutation({
+    args: { eventid: v.id("eventsTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        await ctx.db.patch(eventid, { isPublished: false });
+        return event;
+    }
+})
+
+// publish an event given its id
+export const publishEvent = mutation({
+    args: { eventid: v.id("eventsTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        await ctx.db.patch(eventid, { isPublished: true });
+        return event;
+    }
+})
+
+
+
+// get events by a certain user given the user id
+export const getEventsByUserId = query({
+    args: { userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const userid = args.userid;
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const events = await ctx.db.query("eventsTable").filter(q => q.eq(q.field("uploadedBy"), userid)).collect();
+        return events;
+    }
+})
+
+// upadate an event given its id and new data
+export const updateEvent = mutation({
+    args: {
+        eventid: v.id("eventsTable"),
+        eventTitle: v.string(),
+        description: v.string(),
+        location: v.string(),
+        city: v.string(),
+        startDate: v.string(),
+        endDate: v.string(),
+        image_id: v.string(),
+        image_url: v.string(),
+        category: v.string(),
+        isPaid: v.boolean(),
+        ticket_price: v.number(),
+        ticket_available: v.number(),
+        organizer: v.string(),
+        attendees: v.optional(v.array(v.string())),
+        likedBy: v.optional(v.array(v.string())),
+        isPublished: v.boolean(),
+        isDeleted: v.boolean(),
+        isFeatured: v.boolean(),
+        uploadedBy: v.id('usersTable'),
+        slug: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        await ctx.db.patch(eventid, args);
+        return event;
+    }
+})
     

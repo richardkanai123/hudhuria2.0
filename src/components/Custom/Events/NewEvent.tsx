@@ -37,7 +37,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon, Loader2Icon } from "lucide-react"
+import { CalendarIcon, Loader2Icon, Router } from "lucide-react"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import citiesInKenya from "@/lib/cities"
@@ -47,6 +47,7 @@ import React, { useMemo } from "react"
 import { toast } from "react-toastify"
 import { cn } from "@/lib/utils";
 import { User } from "next-auth"
+import { useRouter } from "next/navigation"
 
 
 // zod schema for event data
@@ -98,7 +99,7 @@ const NewEventSchema = z.object({
 );
 
 export const GetUserDetailsFromApi = async () => {
-    const userUrl = 'http://localhost:3000/api/users/getCurrentUser'
+    const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
     const userRes = await fetch(userUrl)
     const loggedUserData = await userRes.json()
     if (userRes.status !== 200) {
@@ -110,6 +111,8 @@ export const GetUserDetailsFromApi = async () => {
 }
 
 const NewEvent = () => {
+
+    const Router = useRouter()
 
     const form = useForm<z.infer<typeof NewEventSchema>>({
         resolver: zodResolver(NewEventSchema),
@@ -164,12 +167,13 @@ const NewEvent = () => {
             const resBody = await res.json()
 
             if (res.status !== 201) {
-                form.setError('root', { message: resBody.message })
+                form.setError('root', { message: resBody.message as string })
             }
 
-            toast.success("Event created successfully");
+            toast.success("Event created successfully!");
             form.reset();
             // TODO : redirect to preview page for the event to confirm publishing or not
+            Router.replace(`/events/preview/${resBody.slug}`)
 
         } catch (error) {
             if (error instanceof Error) {

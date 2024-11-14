@@ -127,7 +127,10 @@ export async function POST(request: NextRequest) {
 
         revalidatePath('/')
 
-        return NextResponse.json({ message: `Added new event!` }, { status: 201 })
+        return NextResponse.json({
+            message: `Added new event!`, 
+            slug: NewEventObject.slug
+         }, { status: 201 })
 
     } catch (error) {
         if (error instanceof Error) {

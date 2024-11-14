@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../../convex/_generated/api";
-import { Id } from "../../../../../convex/_generated/dataModel";
 
 export async function GET(request: NextRequest) { 
     const { searchParams } = new URL(request.url);

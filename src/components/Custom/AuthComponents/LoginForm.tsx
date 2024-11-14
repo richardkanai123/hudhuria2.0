@@ -45,38 +45,43 @@ export function LoginForm() {
     })
 
     const LoginNewUser = async (data: z.infer<typeof LoginFormSchema>) => {
-        // send the form data to the server
-        // try {
-        // const res = await LoginUserByCredentials(data)
-        const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false })
-        console.log(res)
-        if (!res?.error) {
-            form.reset()
-            Router.back()
-            Router.refresh()
-        }
+        try {
+            const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false })
+            if (!res?.error) {
+                form.reset()
+                Router.back()
+                Router.refresh()
+            }
 
-        if (res?.error) {
+            if (res?.error) {
 
-            switch (res?.error) {
-                case 'CredentialsSignin':
-                    form.setError("root", { message: 'Invalid email or password' })
-                    return { error: 'Invalid email or password' }
-                case 'AccessDenied':
-                    form.setError("root", { message: 'Access denied for this user' })
-                    return { error: 'Access denied for this user' }
-                case 'AccountNotLinked':
-                    form.setError("root", { message: 'Account not linked' })
-                    return { error: 'Account not linked' }
-                case 'InvalidCheck':
-                    form.setError("root", { message: 'Invalid check' })
-                    return { error: 'Invalid check' }
-                case 'MissingAdapter':
-                    form.setError("root", { message: 'Missing adapter' })
-                    return { error: 'Missing adapter' }
-                default:
-                    form.setError("root", { message: 'Unable to login! Please try again' })
-                    return { error: "Unable to login! Please try again" }
+                switch (res?.error) {
+                    case 'CredentialsSignin':
+                        form.setError("root", { message: 'Invalid email or password' })
+                        return { error: 'Invalid email or password' }
+                    case 'AccessDenied':
+                        form.setError("root", { message: 'Access denied for this user' })
+                        return { error: 'Access denied for this user' }
+                    case 'AccountNotLinked':
+                        form.setError("root", { message: 'Account not linked' })
+                        return { error: 'Account not linked' }
+                    case 'InvalidCheck':
+                        form.setError("root", { message: 'Invalid check' })
+                        return { error: 'Invalid check' }
+                    case 'MissingAdapter':
+                        form.setError("root", { message: 'Missing adapter' })
+                        return { error: 'Missing adapter' }
+                    default:
+                        form.setError("root", { message: 'Unable to login! Please try again' })
+                        return { error: "Unable to login! Please try again" }
+                }
+            }
+        } catch (error) {
+            if (error instanceof AuthError) {
+                form.setError("root", { message: error.message })
+            }
+            else {
+                form.setError("root", { message: "Unable to login! Please try again" })
             }
         }
     }

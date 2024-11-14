@@ -1,17 +1,14 @@
-import CloudImage from '@/components/Custom/Events/CloudImage';
-import { Event } from '@/lib/types';
-import TimeAndDateDisplay from '@/components/Custom/Events/TimeAndDateDisplay';
-import LocationDetails from '@/components/Custom/Events/LocationDetails';
-import TicketCard from '@/components/Custom/Events/TicketCard';
-import AttendanceCard from '@/components/Custom/Events/AttendanceCard';
-import Link from 'next/link';
+import CloudImage from '@/components/Custom/Events/CloudImage'
+import EventPreviewButtons from '@/components/Custom/Events/EventPreviewButtons'
+import LocationDetails from '@/components/Custom/Events/LocationDetails'
+import TicketCard from '@/components/Custom/Events/TicketCard'
+import TimeAndDateDisplay from '@/components/Custom/Events/TimeAndDateDisplay'
+import { Event } from '@/lib/types'
+import Link from 'next/link'
+import React from 'react'
 
-
-
-const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) => {
-    const params = await props.params;
-    const { slug } = params;
-
+const EventPreviewPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params
 
     if (!slug) {
         return (
@@ -23,7 +20,6 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
         )
     }
 
-
     // get the event for the given id
 
     const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
@@ -33,7 +29,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
             'Content-Type': 'application/json',
         },
         next: {
-            tags: ['events', slug],
+            tags: ['event', slug],
         }
     })
 
@@ -50,7 +46,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
         )
     }
 
-    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, attendees, ticket_available, location } = event
+    const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, ticket_available, location, isPublished, isFeatured } = event
 
 
     return (
@@ -60,23 +56,18 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
 
             </div>
             <div className="w-full flex flex-col gap-4 md:flex-wrap p-4">
-
                 <h1 className="text-2xl md:text-4xl font-extrabold text-primary md:leading-relaxed tracking-wide block mb-4">
                     {eventTitle}
                 </h1>
                 <p className='max-w-screen-lg text-lg text-secondary-foreground tracking-wide mb-2'>{description} </p>
-
-                <AttendanceCard attendees={attendees} id={_id} />
-
-                <TicketCard isPaid={isPaid} price={ticket_price} ticket_available={ticket_available} eventID={_id} />
-
-                <TimeAndDateDisplay startDate={startDate} endDate={endDate} />
-
                 <LocationDetails city={city} venue={location} />
+                <TicketCard isPaid={isPaid} price={ticket_price} ticket_available={ticket_available} eventID={_id} />
+                <TimeAndDateDisplay startDate={startDate} endDate={endDate} />
             </div>
 
-        </div >
+            <EventPreviewButtons isPublished={isPublished} eventID={_id} isFeatured={isFeatured} />
+        </div>
     );
-};
+}
 
-export default EventDetailsPage
+export default EventPreviewPage
