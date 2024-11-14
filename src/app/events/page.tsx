@@ -4,7 +4,8 @@ import EventLoadingCard from '@/components/Custom/loaders/EventLoadingCard'
 import { Event } from '@/lib/types'
 import React, { Suspense } from 'react'
 
-const EventsPage = async () => {
+
+const FetchEvents = async (): Promise<Response> => {
 
     const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
@@ -14,12 +15,18 @@ const EventsPage = async () => {
             "Content-Type": "application/json",
         },
         next: {
+            revalidate: 6000,
             tags: ['events'],
-        },
+        }
     })
 
-    const eventsList: Event[] | [] = await res.json()
+    return res
+}
 
+const EventsPage = async () => {
+
+    const res = await FetchEvents()
+    const eventsList: Event[] | [] = await res.json()
 
     if (res.status !== 200) {
         return (
@@ -35,8 +42,7 @@ const EventsPage = async () => {
 
     }
 
-    // 
-    if (eventsList.length === 0) {
+    if (res.status === 200 && eventsList.length === 0) {
         return (
             <div className="w-full mx-auto h-fit flex items-center align-middle justify-center flex-col px-4 py-2">
                 <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
@@ -53,7 +59,6 @@ const EventsPage = async () => {
             <Suspense fallback={<EventLoadingCard />} >
                 <FiltredEventsLister events={eventsList} />
             </Suspense>
-
 
             <div className="w-full h-fit p-4">
                 <CitiesCarousel />
