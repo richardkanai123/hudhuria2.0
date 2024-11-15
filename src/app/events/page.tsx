@@ -2,7 +2,7 @@ import CitiesCarousel from '@/components/Custom/Events/CitiesCarousel'
 import FiltredEventsLister from '@/components/Custom/Events/FiltredEventsLister'
 import EventLoadingCard from '@/components/Custom/loaders/EventLoadingCard'
 import { Event } from '@/lib/types'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 
 
 const FetchEvents = async (): Promise<Response> => {
