@@ -1,4 +1,4 @@
-import React from 'react'
+'use client'
 import { compareDates, formatDateToReadableVersion } from '@/lib/utils';
 import { CalendarCheck, Timer } from 'lucide-react';
 import { Card, CardHeader } from '@/components/ui/card';

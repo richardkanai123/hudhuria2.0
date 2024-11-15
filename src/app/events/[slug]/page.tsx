@@ -8,7 +8,20 @@ import Link from 'next/link';
 import { auth } from '@/Auth';
 import EventPreviewButtons from '@/components/Custom/Events/EventPreviewButtons';
 
+const getEventDetails = async (slug: string) => {
+    const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
+    const res = await fetch(`${EventURL}/${slug}?slug=${slug}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        next: {
+            tags: ['events', slug],
+        }
+    })
 
+    return res
+}
 
 const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) => {
     const params = await props.params;
@@ -27,19 +40,7 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
     }
 
 
-    // get the event for the given id
-
-    const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
-    const res = await fetch(`${EventURL}/${slug}?slug=${slug}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        next: {
-            tags: ['events', slug],
-        }
-    })
-
+    const res = await getEventDetails(slug)
     const event: Event | null = await res.json()
 
     if (res.status !== 200 || !event) {

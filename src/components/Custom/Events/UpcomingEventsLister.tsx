@@ -11,7 +11,9 @@ const UpcomingEventsLister = async () => {
             },
             next: {
                 revalidate: 6000,
+                tags: ['events'],
             }
+
         })
 
         return res
