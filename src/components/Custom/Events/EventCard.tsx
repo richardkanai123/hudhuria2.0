@@ -10,7 +10,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
     const truncatedDescription = eventDescription.slice(0, 100);
 
     return (
-        <Link prefetch href={`/events/${slug}`} className="sm:max-w-[350px] md:w-[350px] aspect-auto flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer bg-accent transition-all ease-linear group hover:shadow-lg justify-around bg-white shadow-sm">
+        <Link prefetch href={`/events/details/${slug}`} className="sm:max-w-[350px] md:w-[350px] aspect-auto flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer bg-accent transition-all ease-linear group hover:shadow-lg justify-around bg-white shadow-sm">
             <div className="w-full min-h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-200 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 relative pt-1">
                 <CloudImage image_id={image_id} />
                 <Badge variant='secondary' className={`text-primary z-10 px-2 shadow-lg absolute top-2 left-2 ${isPaid ? '' : 'bg-lime-200'}`}>

@@ -26,13 +26,13 @@ const getEventDetails = async (slug: string) => {
 const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) => {
     const params = await props.params;
     const { slug } = params;
-    const Session = await auth()
-
+    const Session = await auth();
 
     if (!slug) {
         return (
             <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]'>
                 <p className='text-xl'>Something went wrong!</p>
+                <span className='text-sm'>Missing event or not logged in</span>
                 <span className='text-sm'>Missing event</span>
                 <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
             </div>
@@ -55,6 +55,17 @@ const EventDetailsPage = async (props: { params: Promise<{ slug: string }> }) =>
     }
 
     const { city, description, startDate, ticket_price, endDate, eventTitle, isPaid, _id, image_id, attendees, ticket_available, location, uploadedBy } = event
+
+
+    if (!Session?.user.id || !uploadedBy) {
+        return (
+            <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]'>
+                <p className='text-xl'>Something went wrong!</p>
+                <span className='text-sm'>No user or owner detected</span>
+                <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
+            </div>
+        )
+    }
 
 
     return (
