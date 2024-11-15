@@ -1,38 +1,22 @@
-
-
-/**
- * Fetches events from the API.
- *
- * @returns {Promise<Response>} A promise that resolves with an HTTP response containing a JSON array of events.
- * @see https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props#built-in-support-for-revalidation
- */
-const FetchEvents = async (): Promise<Response> => {
-    'use server'
-    const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
-
-    const res = await fetch(eventsApiUrl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        next: {
-            revalidate: 6000,
-        }
-    })
-
-    return res
-}
-/**
- * Renders a list of upcoming events.
- *
- * The list includes events that are upcoming and not featured, and also events that are featured.
- *
- * @returns {JSX.Element} A JSX element containing a list of upcoming events.
- */
-
 import { Event } from "@/lib/types"
 import EventCard from "./EventCard"
 const UpcomingEventsLister = async () => {
+    const FetchEvents = async (): Promise<Response> => {
+        'use server'
+        const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
+
+        const res = await fetch(eventsApiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            next: {
+                revalidate: 6000,
+            }
+        })
+
+        return res
+    }
 
     const res = await FetchEvents()
     const eventsList: Event[] | [] = await res.json()

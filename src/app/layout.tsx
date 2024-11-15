@@ -66,18 +66,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning >
-      <SessionProvider>
-        <body
-          className={` font-sans antialiased w-full `}
-        >
+      <body
+        className={` font-sans antialiased w-full `}
+      >
+        <SessionProvider>
           <div className="w-full max-w-[1920px] mx-auto relative min-h-screen max-h-fit">
             <Header />
             {children}
             <Footer />
           </div>
           <ToastContainer />
-        </body>
-      </SessionProvider>
+        </SessionProvider>
+      </body>
     </html>
   );
 }
