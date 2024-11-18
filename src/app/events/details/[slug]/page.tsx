@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const getEventDetails = async (slug: string) => {
     const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
-    const res = await fetch(`${EventURL}/${slug}?slug=${slug}`, {
+    const res = await fetch(`${EventURL}/${slug}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -20,11 +20,11 @@ const getEventDetails = async (slug: string) => {
 const EventsDetails = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
     const { slug } = await params
-    console.log(slug)
+    // console.log(slug)
 
     if (!slug) {
         return (
-            <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]' >
+            <div className='text-center w-full flex flex-col align-middle justify-center items-center  min-h-[75vh]' >
                 <p className='text-xl'>Something went wrong!</p>
                 <span className='text-sm'>Missing event</span>
                 <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
