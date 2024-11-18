@@ -10,7 +10,6 @@ const UpcomingEventsLister = async () => {
                 "Content-Type": "application/json",
             },
             next: {
-                revalidate: 6000,
                 tags: ['events'],
             }
 

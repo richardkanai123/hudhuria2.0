@@ -14,7 +14,6 @@ const FetchEvents = async (): Promise<Response> => {
             "Content-Type": "application/json",
         },
         next: {
-            revalidate: 6000,
             tags: ['events'],
         }
     })

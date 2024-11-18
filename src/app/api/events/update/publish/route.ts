@@ -42,6 +42,7 @@ export async function PATCH(request: Request) {
         }
 
         revalidateTag(NewlyPublishedEvent.slug)
+        revalidateTag('events')
         revalidatePath('/')
 
         return NextResponse.json({ message: `Unpublished: ${NewlyPublishedEvent.eventTitle}`, slug: NewlyPublishedEvent.slug }, { status: 200 });
