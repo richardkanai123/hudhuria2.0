@@ -233,3 +233,104 @@ export const updateEvent = mutation({
     }
 })
     
+
+// like an event 
+export const LikeEvent = mutation({
+    args: { eventid: v.id("eventsTable"), userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        const userid = args.userid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        // check if the user has already liked the event
+        if (event.likedBy?.includes(userid)) {
+            throw new Error("You have already liked this event");
+        }
+        await ctx.db.patch(eventid, { likedBy: event.likedBy ? [...event.likedBy, userid] : [userid] });
+        return event.likedBy;
+    }
+})
+
+// Unlike an already liked event
+export const UnlikeEvent = mutation({
+    args: { eventid: v.id("eventsTable"), userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        const userid = args.userid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        
+        // check if the user has already liked the event
+        if (!event.likedBy?.includes(userid)) {
+            throw new Error("You have not liked this event");
+        }
+        await ctx.db.patch(eventid, { likedBy: event.likedBy?.filter(likedUser => likedUser !== userid) });
+
+        return event.likedBy;
+    }
+})
+
+
+// mark an event as attending
+export const MarkAttendance = mutation({
+    args: { eventid: v.id("eventsTable"), userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        const userid = args.userid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        await ctx.db.patch(eventid, { attendees: event.attendees ? [...event.attendees, userid] : [userid] });
+        return event.attendees;
+    }
+})
+
+
+// remove attendance from an event
+export const RemoveAttendance = mutation({
+    args: { eventid: v.id("eventsTable"), userid: v.id("usersTable") },
+    handler: async (ctx, args) => {
+        const eventid = args.eventid;
+        const userid = args.userid;
+        if (typeof eventid !== 'string' || !eventid) {
+            throw new Error("Invalid event id");
+        }
+        if (typeof userid !== 'string' || !userid) {
+            throw new Error("Invalid user id");
+        }
+        const event = await ctx.db.get(eventid);
+        if (!event) {
+            throw new Error("Event not found");
+        }
+
+        // check if the user has already marked attendance
+        if (!event.attendees?.includes(userid)) {
+            throw new Error("You are not on the attendace list");
+        }
+        await ctx.db.patch(eventid, { attendees: event.attendees?.filter(attendee => attendee !== userid) });
+        return event.attendees;
+    }
+})

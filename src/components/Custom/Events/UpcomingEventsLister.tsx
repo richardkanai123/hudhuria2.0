@@ -11,8 +11,8 @@ const UpcomingEventsLister = async () => {
             },
             next: {
                 tags: ['events'],
-            }
-
+            },
+            cache: "force-cache",
         })
 
         return res
