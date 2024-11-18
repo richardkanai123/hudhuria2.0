@@ -36,9 +36,9 @@ const EventsDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
     const res = await getEventDetails(slug)
     const event: Event | null = await res.json()
 
-    if (res.status !== 200 || !event) {
+    if (res.status !== 200) {
         return (
-            <div className='text-center w-full flex align-middle justify-center items-center  min-h-[75vh]' >
+            <div className='text-center w-full flex flex-col align-middle justify-center items-center  min-h-[75vh]' >
                 <p className='text-xl'>Something went wrong!</p>
                 <span className='text-sm'>Missing event</span>
                 <Link href="/events" className="text-sm hover:text-primary">Go to events</Link>
@@ -52,7 +52,7 @@ const EventsDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
     return (
         <div className='w-full min-h-[75vh] max-h-fit flex flex-col items-center align-middle'>
             <h1>Event Details</h1>
-            <h1>{event.eventTitle}</h1>
+            <h1>{event?.eventTitle}</h1>
 
         </div>
     )
