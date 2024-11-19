@@ -3,11 +3,8 @@ import EventLoadingCard from "@/components/Custom/loaders/EventLoadingCard";
 import ContactForm from "@/components/Custom/nav/ContactForm";
 import UpcomingEventsLister from "@/components/Custom/Events/UpcomingEventsLister";
 import { Suspense } from "react";
-import { auth } from "@/Auth";
 
-export default async function Home() {
-  const session = await auth()
-
+export default function Home() {
   return (
     <div className="w-full h-full max-h-fit flex flex-col items-center justify-center gap-4 overflow-x-hidden  bg-opacity-5">
       {/* hero image */}

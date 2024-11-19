@@ -99,17 +99,6 @@ const NewEventSchema = z.object({
     }
 );
 
-// export const GetUserDetailsFromApi = async () => {
-//     const userUrl = `${process.env.NEXT_PUBLIC_URL}/api/users/getCurrentUser`
-//     const userRes = await fetch(userUrl)
-//     const loggedUserData = await userRes.json()
-//     if (userRes.status !== 200) {
-//         return null
-//     }
-//     const SessionUser = loggedUserData.user as User
-//     return SessionUser
-
-// }
 
 const NewEvent = () => {
 
@@ -176,7 +165,7 @@ const NewEvent = () => {
             toast.success("Event created successfully!");
             form.reset();
             // TODO : redirect to preview page for the event to confirm publishing or not
-            Router.replace(`/events/preview/${resBody.slug}`)
+            Router.replace(`/events/details/${resBody.slug}`)
 
         } catch (error) {
             if (error instanceof Error) {
@@ -259,7 +248,7 @@ const NewEvent = () => {
                                     <FormItem>
                                         <FormLabel>Organizer Name / Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Event Title" {...field} type="text" />
+                                            <Input placeholder="Event organizer" {...field} type="text" />
                                         </FormControl>
                                         <FormDescription>
                                             Title or name of the person or entity organizing the event

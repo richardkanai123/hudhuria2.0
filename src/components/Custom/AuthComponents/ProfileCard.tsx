@@ -1,63 +1,96 @@
 'use client'
 import React from 'react'
-import SignOutBtn from '@/components/Custom/AuthComponents/SignOutBtn'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Edit, EditIcon, MailIcon, TagIcon } from 'lucide-react'
+import { Edit, EditIcon, MailIcon, TagIcon, UserIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { BsEnvelope } from 'react-icons/bs'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 const ProfileCard = () => {
     const session = useSession()
     const Router = useRouter()
     const avatarUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}&background=random`
     return (
 
-        <div className="w-full p-2 flex flex-col md:flex-row gap-4 justify-around align-middle mx-auto max-w-screen-xl" style={{
-            backgroundImage: `url('/conference_banner.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
-            backgroundBlendMode: 'overlay',
-            backfaceVisibility: 'revert',
 
-        }}>
-            <Card className=" flex flex-col align-middle items-center justify-center bg-sky-300 bg-opacity-70 backdrop:blur-lg shadow-sm">
-                <CardHeader className="text-xl text-primary font-bold flex">
-                    <Avatar className='w-20 h-20 '>
-                        <AvatarImage src={avatarUrl} />
-                        <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
-                    </Avatar>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2 align-middle items-center justify-center">
-                    <h1 className='text-xl font-semibold'>{session.data?.user?.name}</h1>
-                    <p className='font-bold'>
-                        <TagIcon className="w-5 h-5 inline-block mr-2 bg-sky-600 text-white rounded-full p-1 " />
-                        {session.data?.user?.bio}
-                    </p>
-                </CardContent>
-            </Card>
+        <Card className="w-full max-w-screen-sm p-2 flex flex-col align-middle items-center justify-center  bg-opacity-70 backdrop:blur-lg shadow-sm">
+            <CardHeader className="text-xl text-primary font-bold flex overflow-hidden">
+                <Avatar className='w-24 h-24 '>
+                    <AvatarImage src={avatarUrl} />
+                    <AvatarFallback>{session.data?.user?.name as string}</AvatarFallback>
+                </Avatar>
+            </CardHeader>
+            <CardContent className="w-full  flex flex-col gap-4 items-center justify-center">
+                <div className="w-full flex flex-col px-2">
+                    <h3 className="text-gray-800 font-light text-xl flex items-center"> <UserIcon className="w-4 h-4 mr-2" /> Full Name</h3>
+                    <p className="text-xl font-semibold w-full border rounded-sm p-2">{session.data?.user?.name}</p>
+                </div>
 
-            <Card className="flex flex-col align-middle items-center justify-center  bg-sky-300 bg-opacity-70 backdrop:blur-lg shadow-sm">
-                <CardHeader className="text-xl text-primary font-bold flex">
-                    Info
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2 align-middle items-center justify-center">
-                    <p className='font-semibold'>
-                        <MailIcon className="w-5 h-5 inline-block mr-2 bg-sky-600 text-white rounded-full p-1 " />
-                        {session.data?.user?.email}
-                    </p>
+                <div className="w-full flex flex-col px-2">
+                    <h3 className="text-gray-800 font-light flex text-xl items-center"> <BsEnvelope className="w-4 h-4 mr-2" /> Email</h3>
+                    <p className="text-xl font-bold w-full border rounded-sm p-2">{session.data?.user?.email}</p>
+                </div>
 
 
-                    <section className="w-full flex flex-col gap-4 align-middle justify-around items-center p-2">
-                        <Button variant='secondary' className='w-full  ' > <EditIcon className="w-6 h-6 inline-block mr-2 bg-sky-600 text-white rounded-full p-1 " /> Edit Profile</Button>
-                        <SignOutBtn />
-                    </section>
-                </CardContent>
-            </Card>
-        </div>
+                <div className="w-full flex flex-col px-2">
+                    <h3 className="text-gray-800 font-light flex text-xl items-center"> <TagIcon className="w-4 h-4 mr-2" /> Bio</h3>
+                    <p className="text-xl font-bold w-full border rounded-sm p-2">{session.data?.user?.bio}</p>
+                </div>
 
+                <div className="flex flex-row gap-4">
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button ><EditIcon className="w-4 h-4 mr-2" /> Edit Profile</Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>Edit profile</DialogTitle>
+                                <DialogDescription>
+                                    Make changes to your profile here. Click save when you're done.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="name" className="text-right">
+                                        Name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        defaultValue={session.data?.user?.name as string}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="username" className="text-right">
+                                        Bio
+                                    </Label>
+                                    <Input
+                                        id="username"
+                                        defaultValue={session.data?.user?.bio as string}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <Button type="submit">Save changes</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+            </CardContent>
+        </Card>
 
     )
 }

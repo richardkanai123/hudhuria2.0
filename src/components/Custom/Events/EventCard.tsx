@@ -1,4 +1,3 @@
-'use client'
 import { CalendarCheck, MapPinHouseIcon, UsersRound } from "lucide-react"
 import { formatDistance } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +6,7 @@ import CloudImage from "./CloudImage";
 import { Event } from "@/lib/types";
 const EventCard = ({ eventData }: { eventData: Event }) => {
     const { city, description: eventDescription, startDate, ticket_price, eventTitle, isPaid, image_id, slug } = eventData;
-    const truncatedDescription = eventDescription.slice(0, 100);
+    const truncatedDescription = eventDescription.slice(0, 80);
 
     return (
         <Link prefetch href={`/events/details/${slug}`} className="sm:max-w-[350px] md:w-[350px] aspect-auto flex flex-col gap-2 rounded-md overflow-hidden cursor-pointer bg-accent transition-all ease-linear group hover:shadow-lg justify-around bg-white shadow-sm">

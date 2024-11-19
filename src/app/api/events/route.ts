@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 
         // create-slug from event title
         const CreateEventSlug = (eventTitle: string, location: string, organizer: string) => { 
-            const slug = eventTitle.toLowerCase().replace(/\s+/g,'-')+"-"+`${location.toLowerCase()}-${organizer.toLowerCase()}`;
+            const slug = eventTitle.toLowerCase().replace(/\s+/g,'-').replace(/\s/g,'-')+"-"+`${location.toLowerCase().replace(/\s+/g,'-').replace(/\s/g,'-')}-${organizer.toLowerCase().replace(/\s+/g,'-').replace(/\s/g,'-')}`;
             return slug;
         }
 

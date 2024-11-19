@@ -3,7 +3,6 @@ import EventCard from "./EventCard"
 const UpcomingEventsLister = async () => {
     const FetchEvents = async (): Promise<Response> => {
         const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
-
         const res = await fetch(eventsApiUrl, {
             method: "GET",
             headers: {

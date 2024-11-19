@@ -1,11 +1,14 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { FaHeartCircleCheck } from "react-icons/fa6";
 import { FaThumbsDown } from "react-icons/fa";
 import { BsPersonFillAdd } from "react-icons/bs";
 import { HiUserRemove } from "react-icons/hi";
+
+const ICON_SIZE = 5;
+const ICON_COLOR = "pink-300";
+
 type PropsType = {
     likedBy?: string[];
     uploader: string;
@@ -14,63 +17,61 @@ type PropsType = {
 
 const EventLikesandMarks = ({ likedBy, uploader, attendees }: PropsType) => {
     const session = useSession();
-    const isOwner = uploader === session.data?.user.id;
-    const isAttending = attendees ? attendees.includes(session.data?.user.id as string) : [];
-    const isLiked = likedBy ? likedBy.includes(session.data?.user.id as string) : [];
-    const NumberOfLikes = likedBy ? likedBy.length : 0;
-    const NumberOfAttendees = attendees ? attendees.length : 0;
+    const isOwner = uploader === session.data?.user.id as string;
+    const isAttending = attendees?.includes(session.data?.user.id as string);
+    const isLiked = likedBy?.includes(session.data?.user.id as string);
 
-    if (session.status === 'unauthenticated') {
-        return null
-    }
+    if (session.status === "unauthenticated") return null;
 
-    if (isOwner) {
-        <div className="flex flex-col align-middle mt-2">
-            <p className="text-sm font-semibold"> Attending:  {NumberOfAttendees}</p>
-            <p className="text-sm font-semibold"> Likes:  {NumberOfLikes}</p>
-        </div>
+    const renderLikeButton = () => {
+        if (isLiked) {
+            return (
+                <Button size="sm" className="flex align-middle">
+                    <FaThumbsDown className={`w-${ICON_SIZE} h-${ICON_SIZE} text-${ICON_COLOR}`} />
+                    Unlike <span className="text-xs align-sub"> {likedBy?.length}</span>
+                </Button>
+            );
+        }
+        return (
+            <Button size="sm" className="flex align-middle">
+                <FaHeartCircleCheck className={`w-${ICON_SIZE} h-${ICON_SIZE} text-${ICON_COLOR}`} />
+                Like <span className="text-xs align-sub"> {likedBy?.length}</span>
+            </Button>
+        );
+    };
+
+    const renderAttendButton = () => {
+        if (isAttending) {
+            return (
+                <Button size="sm" className="flex align-middle">
+                    <HiUserRemove className={`w-${ICON_SIZE} h-${ICON_SIZE} text-${ICON_COLOR}`} />
+                    <span className="text-xs align-sub"> {attendees?.length}</span> attending
+                </Button>
+            );
+        }
+        return (
+            <Button size="sm" className="flex align-middle bg-lime-300">
+                <BsPersonFillAdd className={`w-${ICON_SIZE} h-${ICON_SIZE} text-${ICON_COLOR}`} />{" "}
+                <span className="text-xs align-sub"> {attendees?.length}</span> attend
+            </Button>
+        );
+    };
+
+    if (!isOwner) {
+        return (
+            <div className="flex items-center align-middle mt-2">
+                <div className="flex align-middle gap-2 bg-slate-50 rounded-sm p-2">
+                    {renderLikeButton()}
+                    {renderAttendButton()}
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="flex  items-center align-middle mt-2">
-            <div className="flex align-middle gap-2 bg-slate-50 rounded-sm p-2">
-                {!isLiked ? (
-                    <Button
-                        className="flex align-middle bg-pink-900"
-                        size='icon'
-                        variant="ghost">
-                        <FaThumbsDown className="w-5 h-5 text-pink-400" />
-                        <span className="text-xs align-sub"> {NumberOfLikes}</span>
-                    </Button>
-                ) : (
-                    <Button
-                        size='icon'
-                        className="flex align-middle"
-                        variant="ghost">
-                        <FaHeartCircleCheck className="w-5 h-5 text-pink-400" />{" "}
-                        <span className="text-xs align-sub"> {NumberOfLikes}</span>
-                    </Button>
-                )}
-
-                {isAttending ? (
-                    <Button
-                        size='icon'
-                        className="flex align-middle"
-                        variant="ghost">
-                        <HiUserRemove className="w-5 h-5 text-pink-400" />
-                        <span className="text-xs align-sub"> {NumberOfAttendees}</span>
-                    </Button>
-                ) : (
-                    <Button
-                        size='icon'
-                        className="flex align-middle bg-lime-300"
-                        variant="ghost">
-                        <BsPersonFillAdd className="w-5 h-5 text-pink-400" />{" "}
-                        <span className="text-xs align-sub"> {NumberOfAttendees}</span>
-                    </Button>
-                )}
-            </div>
-            <div className="flex"></div>
+        <div className="w-full flex flex-col align-middle mt-2">
+            <p className="text-sm font-semibold"> Attending: {attendees?.length}</p>
+            <p className="text-sm font-semibold"> Likes: {likedBy?.length}</p>
         </div>
     );
 };

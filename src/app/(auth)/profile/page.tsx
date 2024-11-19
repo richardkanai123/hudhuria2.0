@@ -14,7 +14,7 @@ const ProfilePage = async () => {
     )
 
     return (
-        <div className='w-full min-h-screen max-h-fit flex flex-col items-center align-middle  '>
+        <div className='w-full min-h-screen max-h-fit flex flex-col items-center align-middle p-4 '>
 
             <Suspense fallback={<div>Loading...</div>}>
                 <ProfileCard />

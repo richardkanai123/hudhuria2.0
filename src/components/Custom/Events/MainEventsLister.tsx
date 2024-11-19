@@ -53,7 +53,7 @@ const MainEventsLister = async () => {
         )
     }
     return (
-        <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle  ">
+        <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
             {
                 eventsList.map((event) => (
                     event ? <EventCard key={event._id} eventData={event} /> : null
