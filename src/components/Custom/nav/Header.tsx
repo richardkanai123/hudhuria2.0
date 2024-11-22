@@ -1,5 +1,4 @@
 'use client'
-
 import { Button } from '@/components/ui/button'
 import { IoLogInSharp } from "react-icons/io5";
 import {
@@ -12,16 +11,12 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu } from 'lucide-react';
-import ClientAuthBtn from '../AuthComponents/AuthButton.client';
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useRouter } from 'next/navigation';
 import HeaderLinks from './Header-links';
-import { signOut } from 'next-auth/react';
+
 const Header = () => {
-
-
-
     const session = useSession()
     const Router = useRouter()
 

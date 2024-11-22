@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useRouter, useSearchParams } from "next/navigation";
-import { LoginUserByCredentials } from "@/lib/authHelpers";
 import { LoaderPinwheel, Router } from "lucide-react";
 import { AuthError } from "next-auth";
 import { signIn } from "next-auth/react";
@@ -87,7 +86,7 @@ export function LoginForm() {
     }
 
     return (
-        <Card className="mx-auto w-full h-full max-w-[600px]">
+        <Card className="mx-auto w-full h-full max-w-[600px] max-h-fit">
             <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
 
