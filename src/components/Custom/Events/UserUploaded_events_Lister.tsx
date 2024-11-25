@@ -2,7 +2,7 @@ import { FetchEvents } from "@/lib/actions/EventsActions"
 import { Event } from "@/lib/types"
 import Client_Side_Events_Lister from "@/components/Custom/Events/Client_Side_Events_Lister"
 
-const UserUpcomingEvents = async ({ userid }: { userid: string }) => {
+const UserUploaded = async ({ userid }: { userid: string }) => {
 
     const res = await FetchEvents()
     const eventsList: Event[] | [] = await res.json()
@@ -27,4 +27,4 @@ const UserUpcomingEvents = async ({ userid }: { userid: string }) => {
     )
 }
 
-export default UserUpcomingEvents
+export default UserUploaded

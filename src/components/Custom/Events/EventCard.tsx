@@ -1,3 +1,4 @@
+'use client'
 import { CalendarCheck, MapPinHouseIcon, UsersRound } from "lucide-react"
 import { formatDistance } from "date-fns";
 import { Badge } from "@/components/ui/badge";

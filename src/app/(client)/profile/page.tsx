@@ -27,7 +27,6 @@ const ProfilePage = async () => {
 
             <div className="w-full flex flex-col align-middle my-4">
                 <div className="w-full p-2">
-                    <h2 className=' font-semibold text-primary text-xl'>Your Upcoming Events</h2>
                     {
                         userid ? (
                             <Suspense fallback={<EventLoadingCard />}>
@@ -38,7 +37,7 @@ const ProfilePage = async () => {
                         )
                     }
                 </div>
-                <h2>Your Uploads</h2>
+
             </div>
         </div>
     )

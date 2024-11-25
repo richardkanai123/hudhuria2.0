@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 const ContactForm = () => {
     return (
-        <div id='contact' className="w-full h-full flex flex-col align-middle items-center justify-center gap-4 overflow-x-hidden my-4 mx-auto">
+        <div id='contact' className="w-full h-full flex flex-col align-middle items-center justify-center gap-4 overflow-x-hidden my-4 mx-auto px-2">
             <h1 className='text-2xl text-center font-bold text-primary'>Contact Us</h1>
             <form className="w-full max-w-lg mx-auto p-4 space-y-4 bg-slate-100 shadow-md rounded-md flex flex-col justify-center items-center ">
 
@@ -77,33 +77,37 @@ const ContactForm = () => {
                 </button>
             </form>
 
-            <div className="flex-1 flex justify-center gap-4 text-left mx-auto ">
+            <div className="flex-1 flex justify-center gap-4 text-left mx-auto flex-col align-start place-items-start md:flex-row  ">
                 {/* facebook link */}
-                <Button variant="ghost" asChild className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
-                    <a href="https://www.facebook.com/hudhuria" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer">
-                        <FaFacebook className="w-8 h-8" />
+                <Button variant="ghost" className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
+                    <a href="https://www.facebook.com/hudhuria" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer  flex items-center align-middle gap-2">
+                        <FaFacebook className="w12 h-12" /> Facebook
                     </a>
+
                 </Button>
 
                 {/* whatsapp link */}
-                <Button variant="ghost" asChild className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
-                    <a href="https://wa.me/+25470987654321" target='blank' className="text-lg text-lime-700 hover:text-green-400 font-semibold  cursor-pointer">
-                        <FaWhatsapp className="w-8 h-8 " />
+                <Button variant="ghost" className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
+                    <a href="https://wa.me/+25470987654321" target='blank' className="text-lg text-lime-700 hover:text-green-400 font-semibold  cursor-pointer  flex items-center align-middle gap-2">
+                        <FaWhatsapp className="w12 h-12 " /> Chat now
                     </a>
+
                 </Button>
 
                 {/* phone link */}
-                <Button variant="ghost" asChild className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
-                    <a href="tel:+25470987654321" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer">
-                        <PhoneCall className="w-8 h-8" />
+                <Button variant="ghost" className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent  ">
+                    <a href="tel:+25470987654321" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer flex items-center align-middle gap-2">
+                        <PhoneCall className="w12 h-12" />  Call now
                     </a>
+
                 </Button>
 
                 {/* email link */}
-                <Button variant="ghost" asChild className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent ">
-                    <a href="mailto:admin@hudhuria.com" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer">
-                        <MailPlusIcon className="w-8 h-8" />
+                <Button variant="ghost" className="flex items-center justify-center gap-2 bg-transparent hover:bg-transparent ">
+                    <a href="mailto:admin@hudhuria.com" target='blank' className="text-lg text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer  flex items-center align-middle gap-2">
+                        <MailPlusIcon className="w12 h-12" />      Email
                     </a>
+
                 </Button>
             </div>
         </div >
