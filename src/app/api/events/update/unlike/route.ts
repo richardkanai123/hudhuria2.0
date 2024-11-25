@@ -7,9 +7,7 @@ import { revalidateTag } from "next/cache";
 
 export async function PATCH(request: NextRequest) {
     try {
-        const bodyData = await request.json();
-        console.log(bodyData)
-        
+        const bodyData = await request.json();        
         const eventid = bodyData.eventid as Id<"eventsTable">;
         const userid = bodyData.userid as Id<"usersTable">;
 

@@ -1,6 +1,7 @@
 import { FetchEvents } from "@/lib/actions/EventsActions"
 import { Event } from "@/lib/types"
 import EventCard from "./EventCard"
+import Client_Side_Events_Lister from "./Client_Side_Events_Lister"
 
 const UserUpcomingEvents = async ({ userid }: { userid: string }) => {
 
@@ -22,31 +23,8 @@ const UserUpcomingEvents = async ({ userid }: { userid: string }) => {
 
     if (!eventsList || eventsList.length === 0) return <div>No upcoming events</div>
 
-    console.log(userid)
-    const FutureEvents = eventsList.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).filter((event) => {
-        const eventDate = new Date(event.startDate)
-        const currentDate = new Date()
-        return eventDate > currentDate
-    })
-    const UpcomingNonFeaturedEvents = FutureEvents.filter((event) => !event.isFeatured)
-
-
-    const userUpcomingEvents = UpcomingNonFeaturedEvents.filter((event) => event.attendees?.includes(userid))
-
-    if (!userUpcomingEvents || userUpcomingEvents.length === 0) return <div>No upcoming events</div>
-
-
     return (
-        <>
-            <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Your Upcoming Events</h1>
-
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
-                {
-                    userUpcomingEvents.map((event) => (
-                        event ? <EventCard key={event._id} eventData={event} /> : null
-                    ))
-                }
-            </div></>
+        <Client_Side_Events_Lister events={eventsList as Event[]} userid={userid} />
     )
 }
 

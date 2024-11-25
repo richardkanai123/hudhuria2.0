@@ -7,7 +7,6 @@ import { revalidateTag } from "next/cache";
 import { revalidatePath } from "next/cache";
 export async function PATCH(request: Request) {
     const { searchParams } = new URL(request.url);
-    console.log(searchParams)
     const eventid = searchParams.get("eventid") as Id<"eventsTable">;
     const userid = searchParams.get("userid") as Id<"usersTable">;
     if (!eventid) {

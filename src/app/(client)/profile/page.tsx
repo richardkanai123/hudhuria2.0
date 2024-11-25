@@ -3,6 +3,7 @@ import { LoginForm } from '@/components/Custom/AuthComponents/LoginForm'
 import ProfileCard from '@/components/Custom/AuthComponents/ProfileCard'
 import UserUpcomingEvents from '@/components/Custom/Events/UserUpcomingEvents'
 import EventLoadingCard from '@/components/Custom/loaders/EventLoadingCard'
+import ProfileCardLoader from '@/components/Custom/loaders/ProfileCardLoader'
 import { Suspense } from 'react'
 const ProfilePage = async () => {
     const session = await auth()
@@ -19,14 +20,14 @@ const ProfilePage = async () => {
         <div className='w-full min-h-screen max-h-fit flex flex-col items-center align-middle p-4 '>
             <h1 className="text-primary text-xl font-semibold my-2">Your Profile</h1>
 
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<ProfileCardLoader />}>
                 <ProfileCard />
             </Suspense>
 
 
             <div className="w-full flex flex-col align-middle my-4">
                 <div className="w-full p-2">
-                    <h2 className='text-lg font-semibold text-primary'>Your Upcoming Events</h2>
+                    <h2 className=' font-semibold text-primary text-xl'>Your Upcoming Events</h2>
                     {
                         userid ? (
                             <Suspense fallback={<EventLoadingCard />}>
