@@ -3,6 +3,7 @@ import EventLoadingCard from "@/components/Custom/loaders/EventLoadingCard";
 import ContactForm from "@/components/Custom/nav/ContactForm";
 import UpcomingEventsLister from "@/components/Custom/Events/UpcomingEventsLister";
 import { Suspense } from "react";
+import HomeCTAButton from "@/components/Custom/nav/HomeCTAButton";
 
 export default function Home() {
   return (
@@ -21,6 +22,9 @@ export default function Home() {
         <p className="text-center text-xl font-semibold text-white backdrop-blur-[1px] bg-stone-800 bg-blend-darken bg-opacity-10 p-2 rounded-md">
           Discover, Book, Attend and Connect with events near you.
         </p>
+
+        <HomeCTAButton />
+
       </div>
       {/* Upcoming events */}
       <Suspense fallback={<EventLoadingCard />}>

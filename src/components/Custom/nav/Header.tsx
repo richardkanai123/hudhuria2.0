@@ -35,7 +35,7 @@ const Header = () => {
                 <Link href="/" className={pathname === '/' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     Home
                 </Link>
-                <Link href="/events" className={pathname === '/events' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
+                <Link href="/events" className={pathname === '/events' || pathname.startsWith('/events/') ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     Events
                 </Link>
                 <Link href="/about" className={pathname === '/about' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
