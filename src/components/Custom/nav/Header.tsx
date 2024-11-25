@@ -13,12 +13,13 @@ import Image from 'next/image'
 import { Menu } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import HeaderLinks from './Header-links';
 
 const Header = () => {
     const session = useSession()
     const Router = useRouter()
+    const pathname = usePathname()
 
     const avatarUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}&background=random`
 
@@ -31,16 +32,16 @@ const Header = () => {
             </Link>
             {/* nav */}
             <nav className='hidden md:flex gap-4 align-middle'>
-                <Link href="/" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
+                <Link href="/" className={pathname === '/' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     Home
                 </Link>
-                <Link href="/events" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
+                <Link href="/events" className={pathname === '/events' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     Events
                 </Link>
-                <Link href="/about" className="[&.active]:font-bold text-lg active:text-primary [&.active]:text-primary ">
+                <Link href="/about" className={pathname === '/about' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     About
                 </Link>
-                <Link href="/contact" className="[&.active]:font-bold text-lg [&.active]:text-primary ">
+                <Link href="/contact" className={pathname === '/contact' ? 'font-bold text-lg text-primary underline underline-offset-4 touch-pan-up' : ` text-lg font-bold`}>
                     Contact
                 </Link>
             </nav>
