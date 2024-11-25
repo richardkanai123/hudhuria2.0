@@ -32,13 +32,39 @@ const MainEventsLister = async () => {
             </div>
         )
     }
+
+    const FutureEvents = eventsList.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).filter((event) => {
+        const eventDate = new Date(event.startDate)
+        const currentDate = new Date()
+        return eventDate > currentDate
+    })
+
+
+    const FeaturedEvents = FutureEvents.filter((event) => event.isFeatured === true && event.isPublished && !event.isDeleted)
+
+    const UpcomingUnfeaturedEvents = FutureEvents.filter((event) => !event.isFeatured && event.isPublished && !event.isDeleted)
+
     return (
-        <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
-            {
-                eventsList.map((event) => (
-                    event ? <EventCard key={event._id} eventData={event} /> : null
-                ))
-            }
+        <div className="w-full h-fit flex flex-col px-4 py-2">
+            <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
+                {
+                    FeaturedEvents.map((event) => (
+                        event ? <EventCard key={event._id} eventData={event} /> : null
+                    ))
+                }
+            </div>
+
+            <h1 className="w-full text-3xl font-bold text-left text-primary my-4 "> Upcoming Events</h1>
+
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
+                {
+                    UpcomingUnfeaturedEvents.map((event) => (
+                        event ? <EventCard key={event._id} eventData={event} /> : null
+                    ))
+                }
+            </div>
+
         </div>
     )
 }

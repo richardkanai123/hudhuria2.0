@@ -21,7 +21,7 @@ const UpcomingEventsLister = async () => {
 
     if (!eventsList || eventsList.length === 0) return <div>No upcoming events</div>
 
-    const FeaturedEvents = eventsList.filter((event) => event.isFeatured === true)
+    const FeaturedEvents = eventsList.filter((event) => event.isFeatured === true && event.isPublished && !event.isDeleted)
 
     const FutureEvents = eventsList.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).filter((event) => {
         const eventDate = new Date(event.startDate)
