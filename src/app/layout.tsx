@@ -3,7 +3,7 @@ import Footer from "@/components/Custom/nav/Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SessionProvider from "@/components/Custom/AuthComponents/SessionProvider";
-
+import { Analytics } from "@vercel/analytics/react"
 
 export default function RootLayout({
   children,
@@ -22,6 +22,7 @@ export default function RootLayout({
           </div>
           <ToastContainer />
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
