@@ -1,26 +1,6 @@
 import { Event } from '@/lib/types'
 import EventCard from './EventCard'
-
-
-
-
-const FetchEvents = async (): Promise<Response> => {
-
-    const eventsApiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
-
-    const res = await fetch(eventsApiUrl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        next: {
-            tags: ['events'],
-        },
-        cache: 'force-cache'
-    })
-
-    return res
-}
+import { FetchEvents } from '@/lib/actions/EventsActions'
 
 const MainEventsLister = async () => {
 

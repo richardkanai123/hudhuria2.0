@@ -255,7 +255,7 @@ export const LikeEvent = mutation({
             throw new Error("You have already liked this event");
         }
         await ctx.db.patch(eventid, { likedBy: event.likedBy ? [...event.likedBy, userid] : [userid] });
-        return event.likedBy;
+        return event.slug;
     }
 })
 
@@ -282,7 +282,7 @@ export const UnlikeEvent = mutation({
         }
         await ctx.db.patch(eventid, { likedBy: event.likedBy?.filter(likedUser => likedUser !== userid) });
 
-        return event.likedBy;
+        return event.slug;
     }
 })
 
@@ -304,7 +304,7 @@ export const MarkAttendance = mutation({
             throw new Error("Event not found");
         }
         await ctx.db.patch(eventid, { attendees: event.attendees ? [...event.attendees, userid] : [userid] });
-        return event.attendees;
+        return event.slug;
     }
 })
 
@@ -331,6 +331,6 @@ export const RemoveAttendance = mutation({
             throw new Error("You are not on the attendace list");
         }
         await ctx.db.patch(eventid, { attendees: event.attendees?.filter(attendee => attendee !== userid) });
-        return event.attendees;
+        return event.slug;
     }
 })

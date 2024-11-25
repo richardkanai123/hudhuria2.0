@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchMutation } from "convex/nextjs";
 import { api } from "../../../../../../convex/_generated/api"; 
 import { Id } from "../../../../../../convex/_generated/dataModel";
+import { revalidateTag } from "next/cache";
 
 export async function PATCH(request: NextRequest) {
     try {
@@ -23,9 +24,11 @@ export async function PATCH(request: NextRequest) {
     //    call the mutation to like an event
         const LikedEvent = await fetchMutation(api.events.RemoveAttendance, { eventid: eventid, userid: userid });
         if (!LikedEvent) {
-            return NextResponse.json({ message: "Failed to like event" }, { status: 400 })
+            return NextResponse.json({ message: "Failed to remove attendance" }, { status: 400 })
         }
-        return NextResponse.json({ message: `Liked event!` }, { status: 201 })
+         revalidateTag('events')
+        revalidateTag(LikedEvent)
+        return NextResponse.json({ message: `Removed Attendance` }, { status: 201 })
     } catch (error) {
         if (error instanceof Error) {
             return NextResponse.json({ message: error.message }, { status: 500 })

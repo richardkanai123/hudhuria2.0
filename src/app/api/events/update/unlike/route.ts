@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchMutation, fetchQuery } from "convex/nextjs";
 import { api } from "../../../../../../convex/_generated/api"; 
 import { Id } from "../../../../../../convex/_generated/dataModel";
+import { revalidateTag } from "next/cache";
 
 export async function PATCH(request: NextRequest) {
     try {
@@ -25,6 +26,8 @@ export async function PATCH(request: NextRequest) {
         if (!LikedEvent) {
             return NextResponse.json({ message: "Failed to like event" }, { status: 400 })
         }
+        revalidateTag('events')
+        revalidateTag(LikedEvent)
         return NextResponse.json({ message: `Liked event!` }, { status: 201 })
     } catch (error) {
         if (error instanceof Error) {

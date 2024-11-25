@@ -18,6 +18,10 @@ import { toast } from "react-toastify"
 import { TiTick } from "react-icons/ti";
 import { FaSpinner } from "react-icons/fa6"
 import { useRouter } from "next/navigation"
+import { signOut, useSession } from "next-auth/react"
+import { IoLogOut } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+
 
 const NewUserSchema = z.object({
     name: z.string().min(5, { message: "Too short, minimum is 5 characters" }),
@@ -39,6 +43,7 @@ const NewUserSchema = z.object({
 
 export function SignUpForm() {
 
+    const session = useSession()
     const form = useForm<z.infer<typeof NewUserSchema>>({
         resolver: zodResolver(NewUserSchema),
         defaultValues: {
@@ -91,6 +96,22 @@ export function SignUpForm() {
 
     }
 
+    if (session.status === 'authenticated') {
+        return (
+            <div className="w-full p-4 flex flex-col items-center align-middle gap-4">
+                <h1 className="text-2xl text-center font-semibold">You are logged in as {session.data?.user?.name}</h1>
+                <div className="w-full flex justify-center align-middle gap-2 md:gap-4 items-center ">
+                    <Button size='lg' variant='default'>
+                        <CgProfile size={24} />  <Link href="/profile">Go to Profile</Link>
+                    </Button>
+
+                    <Button onClick={() => signOut()} size='lg' variant='destructive'>
+                        <IoLogOut size={25} />  <Link href="/logout">Logout</Link>
+                    </Button>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <Card className="mx-auto w-full h-full max-w-[600px] my-4">

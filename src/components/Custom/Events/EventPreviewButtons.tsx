@@ -34,28 +34,6 @@ const EventPreviewButtons = ({ eventID, isPublished, isFeatured, slug, owerID }:
     const Router = useRouter()
     const EventURL = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
-    const deleteEvent = async () => {
-        const res = await fetch(`${EventURL}/update/delete/?eventid=${eventID}&userid=${session.data?.user?.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            next: {
-                tags: ['events', slug],
-            }
-        })
-
-        const ReposeMessage = await res.json()
-
-        if (res.status !== 200) {
-            toast.error(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <IoWarningSharp /> })
-        }
-
-        toast.success(ReposeMessage.message as string, { theme: 'colored', position: 'top-center', icon: <FaSquareCheck /> })
-
-        Router.replace('/events')
-    }
-
     const UnpublishEvent = async () => {
 
         try {

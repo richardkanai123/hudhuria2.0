@@ -47,9 +47,11 @@ export function LoginForm() {
         try {
             const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false })
             if (!res?.error) {
+
                 form.reset()
                 Router.back()
-                Router.refresh()
+
+
             }
 
             if (res?.error) {

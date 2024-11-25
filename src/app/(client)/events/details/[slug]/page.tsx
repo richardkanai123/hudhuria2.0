@@ -80,7 +80,7 @@ const EventsDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
 
                 <p className='max-w-screen-lg text-lg text-secondary-foreground tracking-wide text-pretty my-2'>{description}</p>
 
-                <EventLikesandMarks uploader={uploadedBy} attendees={attendees} likedBy={likedBy} />
+                <EventLikesandMarks uploader={uploadedBy} attendees={attendees} likedBy={likedBy} eventID={_id} />
 
 
                 <div className="w-full my-2">

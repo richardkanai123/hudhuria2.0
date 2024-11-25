@@ -6,7 +6,7 @@ import EventLoadingCard from '@/components/Custom/loaders/EventLoadingCard'
 import { Suspense } from 'react'
 const ProfilePage = async () => {
     const session = await auth()
-    const userid = session?.user.id
+    const userid = session?.user?.id
     if (!session) return (
         <div className='w-full h-screen flex flex-col align-middle items-center justify-center p-2'>
 
@@ -27,9 +27,15 @@ const ProfilePage = async () => {
             <div className="w-full flex flex-col align-middle my-4">
                 <div className="w-full p-2">
                     <h2 className='text-lg font-semibold text-primary'>Your Upcoming Events</h2>
-                    <Suspense fallback={<EventLoadingCard />}>
-                        <UserUpcomingEvents />
-                    </Suspense>
+                    {
+                        userid ? (
+                            <Suspense fallback={<EventLoadingCard />}>
+                                <UserUpcomingEvents userid={userid} />
+                            </Suspense>
+                        ) : (
+                            <p className='text-sm text-gray-500'>You are not logged in</p>
+                        )
+                    }
                 </div>
                 <h2>Your Uploads</h2>
             </div>
