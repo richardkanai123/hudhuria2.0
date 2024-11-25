@@ -24,11 +24,11 @@ export async function PATCH(request: NextRequest) {
     //    call the mutation to like an event
         const LikedEvent = await fetchMutation(api.events.UnlikeEvent, { eventid: eventid, userid: userid });
         if (!LikedEvent) {
-            return NextResponse.json({ message: "Failed to like event" }, { status: 400 })
+            return NextResponse.json({ message: "Failed to unlike event" }, { status: 400 })
         }
         revalidateTag('events')
         revalidateTag(LikedEvent)
-        return NextResponse.json({ message: `Liked event!` }, { status: 201 })
+        return NextResponse.json({ message: `unliked event` }, { status: 201 })
     } catch (error) {
         if (error instanceof Error) {
             return NextResponse.json({ message: error.message }, { status: 500 })

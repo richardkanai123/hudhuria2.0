@@ -141,7 +141,10 @@ export const deleteEvent = mutation({
             throw new Error("Event not found");
         }
         await ctx.db.patch(eventid, { isDeleted: true });
-        return true;
+        return {
+            deleted: true,
+            slug: event.slug
+        }
     }
 })
 

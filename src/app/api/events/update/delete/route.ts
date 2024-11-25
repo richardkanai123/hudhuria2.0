@@ -33,16 +33,16 @@ export async function DELETE(request: NextRequest) {
 
         // check if the event is already deleted
         if (ExistingEvent.isDeleted) {
-            return NextResponse.json({ message: "Event is already deleted" }, { status: 400 });
+            return NextResponse.json({ message: "Event does not exist" }, { status: 400 });
         }
 
         // delete the event
         const deletedEvent = await fetchMutation(api.events.deleteEvent, { eventid: eventid })
 
-        if (!deletedEvent) {
+        if (deletedEvent.deleted === false) {
             return NextResponse.json({ message: "Unable to delete event" }, { status: 404 });
         }
-        revalidatePath('/events');
+        revalidateTag(deletedEvent.slug);
         revalidateTag('events');
         return NextResponse.json({ message: "Event deleted" }, { status: 200 });
     } catch (error) {
