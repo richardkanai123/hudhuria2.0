@@ -44,17 +44,16 @@ const CitiesCarousel = () => {
     ]
 
     return (
-        <div className="w-full h-fit flex flex-col px-4 py-2 mx-auto my-4">
-
+        <div className="w-full h-fit flex flex-col py-2 mx-auto my-4">
             <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 ">Discover By City</h1>
-            <div className="w-full mx-auto px-2">
-                <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-                    <div className="flex w-full space-x-4 py-4 mb-3">
+            <div className="w-full mx-auto ">
+                <ScrollArea className="w-full whitespace-nowrap rounded-md border-b ">
+                    <div className="flex w-full space-x-4 px-2 py-4 mb-3">
 
                         {Cities.map((city) => (
 
                             <Link href={`/events?city=${city.name.toLocaleLowerCase()}`}
-                                key={city.name.toLocaleLowerCase()} className="min-w-[280px] h-[250px] md:w-[300px] max-w-xs group cursor-pointer  rounded-md overflow-hidden shadow-sm transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+                                key={city.name.toLocaleLowerCase()} className="w-[250px] h-[250px] md:w-[300px] max-w-xs group cursor-pointer  rounded-md overflow-hidden shadow-sm transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                                 <div
                                     style={{
                                         backgroundImage: `url(${city.image})`,

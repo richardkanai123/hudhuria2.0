@@ -7,8 +7,6 @@ const EventLoadingCard = () => {
     const LoadingArray = new Array(5).fill(0)
     return (
         <div className="w-full h-fit flex flex-col px-4 py-2">
-            <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Events</h1>
-
             <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center align-middle ">
                 {
                     LoadingArray.map((LoadingArray, index) =>

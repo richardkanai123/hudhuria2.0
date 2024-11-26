@@ -1,6 +1,8 @@
 import { Event } from '@/lib/types'
-import EventCard from './EventCard'
 import { FetchEvents } from '@/lib/actions/EventsActions'
+import Client_Events_Lister from '@/components/Custom/Events/Client_Events_Lister'
+import { Suspense } from 'react'
+import EventLoadingCard from '../loaders/EventLoadingCard'
 
 const MainEventsLister = async () => {
 
@@ -18,7 +20,6 @@ const MainEventsLister = async () => {
 
             </div>
         )
-
     }
 
     if (res.status === 200 && eventsList.length === 0) {
@@ -28,43 +29,22 @@ const MainEventsLister = async () => {
                 <p className="text-yellow-600">
                     No events found
                 </p>
-                <p>Refresh the page</p>
             </div>
         )
     }
 
-    const FutureEvents = eventsList.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).filter((event) => {
-        const eventDate = new Date(event.startDate)
-        const currentDate = new Date()
-        return eventDate > currentDate
-    })
-
-
-    const FeaturedEvents = FutureEvents.filter((event) => event.isFeatured === true && event.isPublished && !event.isDeleted)
-
-    const UpcomingUnfeaturedEvents = FutureEvents.filter((event) => !event.isFeatured && event.isPublished && !event.isDeleted)
-
     return (
         <div className="w-full h-fit flex flex-col px-4 py-2">
-            <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
-                {
-                    FeaturedEvents.map((event) => (
-                        event ? <EventCard key={event._id} eventData={event} /> : null
-                    ))
-                }
-            </div>
-
-            <h1 className="w-full text-3xl font-bold text-left text-primary my-4 "> Upcoming Events</h1>
-
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle  ">
-                {
-                    UpcomingUnfeaturedEvents.map((event) => (
-                        event ? <EventCard key={event._id} eventData={event} /> : null
-                    ))
-                }
-            </div>
-
+            <Suspense fallback={
+                <div className='w-full mx-auto h-fit flex items-center align-middle justify-center flex-col px-4 py-2'>
+                    <h1 className='w-full text-2xl font-bold text-left text-primary my-4 '>Upcoming Events</h1>
+                    <EventLoadingCard />
+                    <h2 className='w-full text-2xl font-bold text-left text-primary my-4 '>Featured Events</h2>
+                    <EventLoadingCard />
+                </div>
+            }>
+                <Client_Events_Lister eventsList={eventsList} />
+            </Suspense>
         </div>
     )
 }

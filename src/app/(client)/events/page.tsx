@@ -6,8 +6,12 @@ const EventsPage = async () => {
 
     return (
         <div className='w-full h-full px-4 py-2 flex flex-col align-middle justify-center'>
-            <h1 className='text-xl font-bold text-left text-primary mb-4'>Events</h1>
-            <Suspense fallback={<EventLoadingCard />} >
+            <Suspense fallback={<div className='w-full mx-auto h-fit flex items-center align-middle justify-center flex-col px-4 py-2'>
+                <h1>Upcoming Events</h1>
+                <EventLoadingCard />
+                <h2>Featured Events</h2>
+                <EventLoadingCard />
+            </div>} >
                 <MainEventsLister />
             </Suspense>
 
