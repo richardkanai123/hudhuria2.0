@@ -5,7 +5,7 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FaSpinner } from 'react-icons/fa6'
-import SignOutBtn from '../AuthComponents/SignOutBtn'
+import SignOutBtn from '@/components/Custom/AuthComponents/SignOutBtn'
 import {
     DropdownMenu,
     DropdownMenuContent,

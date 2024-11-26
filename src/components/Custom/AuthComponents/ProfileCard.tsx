@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import SignOutBtn from './SignOutBtn'
 const ProfileCard = () => {
     const session = useSession()
     const Router = useRouter()
@@ -88,6 +89,8 @@ const ProfileCard = () => {
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
+
+                    <SignOutBtn />
                 </div>
             </CardContent>
         </Card>

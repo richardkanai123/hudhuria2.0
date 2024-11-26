@@ -13,7 +13,7 @@ import Image from 'next/image'
 import { Menu } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import HeaderLinks from './Header-links';
 import {
     DropdownMenu,
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 const Header = () => {
     const session = useSession()
-    const Router = useRouter()
     const pathname = usePathname()
 
     const avatarUrl = `https://ui-avatars.com/api/?name=${session.data?.user?.name}&background=random`

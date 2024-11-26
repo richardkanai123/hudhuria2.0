@@ -18,8 +18,8 @@ const Client_Side_Events_Lister = ({ events, userid }: { events: Event[], userid
 
     return (
         <>
-            <h2 className=' font-semibold text-primary text-xl'>Your Upcoming Events</h2>
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
+            <h2 className=' font-semibold text-primary text-xl text-center'>Your Upcoming Events</h2>
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center md:items-stretch place-content-center place-items-center align-middle ">
                 {
                     userUpcomingEvents.length > 0 ? userUpcomingEvents?.map((event) => (
                         <EventCard key={event._id} eventData={event} />
@@ -32,8 +32,8 @@ const Client_Side_Events_Lister = ({ events, userid }: { events: Event[], userid
                     </div>
                 }
             </div>
-            <h2 className=' font-semibold text-primary text-xl mt-4'>Your events</h2>
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
+            <h2 className=' font-semibold text-primary text-xl text-center mt-4'>Your events</h2>
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-center md:items-stretch place-content-center place-items-center align-middle ">
                 {
                     UserUploadedEvents.length > 0 ? UserUploadedEvents.map((event) => (
                         <EventCard key={event._id} eventData={event} />
