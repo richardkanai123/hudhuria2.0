@@ -1,11 +1,19 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Session } from 'next-auth'
 import Link from 'next/link'
-import React from 'react'
 import { useRouter } from 'next/navigation'
 import { FaSpinner } from 'react-icons/fa6'
 import SignOutBtn from '../AuthComponents/SignOutBtn'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const HeaderLinks = ({ session, status }: { session: Session | null, status: string }) => {
     const Router = useRouter()
@@ -33,13 +41,28 @@ const HeaderLinks = ({ session, status }: { session: Session | null, status: str
     if (status === 'authenticated' && session) {
         const avatarUrl = `https://ui-avatars.com/api/?name=${session.user.name}&background=random`
         return (
-            <div className="hidden md:flex gap-4 items-center align-middle justify-center">
-                <Avatar onClick={() => {
-                    Router.push('/profile')
-                }} className='hover:opacity-50 cursor-pointer '>
-                    <AvatarImage src={avatarUrl} />
-                    <AvatarFallback>{session.user?.name as string}</AvatarFallback>
-                </Avatar>
+            <div className="hidden md:flex gap-4 items-center align-middle justify-center relative">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Avatar className='hover:opacity-50 cursor-pointer '>
+                            <AvatarImage src={avatarUrl} />
+                            <AvatarFallback>{session.user?.name as string}</AvatarFallback>
+                        </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            <Link href="/profile">Profile</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href="/events/create">Create event</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href="/policy">Policy</Link>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <SignOutBtn />
             </div>
         )
