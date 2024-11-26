@@ -12,7 +12,7 @@ export const FetchEvents = async (): Promise<Response> => {
             next: {
                 tags: ['events'],
             },
-            cache: "force-cache",
+            cache: "no-cache",
         })
 
         return res
