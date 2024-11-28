@@ -78,7 +78,7 @@ const EventsDetails = async ({ params }: { params: Promise<{ slug: string }> }) 
                 <p className='text-sm align-sub'>Organized by : {organizer}</p>
 
 
-                <p className='max-w-screen-lg text-lg text-secondary-foreground tracking-wide text-pretty my-2'>{description}</p>
+                <div className="w-full p-2 description" dangerouslySetInnerHTML={{ __html: description }}></div>
 
                 <EventLikesandMarks uploader={uploadedBy} attendees={attendees} likedBy={likedBy} eventID={_id} />
 

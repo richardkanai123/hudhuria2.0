@@ -25,7 +25,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+
 
 import {
     Select,
@@ -43,13 +43,16 @@ import { Calendar } from "@/components/ui/calendar"
 import citiesInKenya from "@/lib/cities"
 import { Switch } from '@/components/ui/switch';
 import { TimePickerDemo } from "@/lib/time-picker-demo"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { toast } from "react-toastify"
 import { cn } from "@/lib/utils";
-import { User } from "next-auth"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
+import dynamic from "next/dynamic"
 
+const TipTap = dynamic(() => import('./Editor'), {
+    ssr: false,
+})
 
 // zod schema for event data
 const categories = eventCategories.map((item) => item.name)
@@ -102,6 +105,8 @@ const NewEventSchema = z.object({
 
 const NewEvent = () => {
 
+
+
     const Router = useRouter()
     const session = useSession()
 
@@ -122,58 +127,63 @@ const NewEvent = () => {
         mode: 'onChange',
     });
 
+
+
+
+
+
     const handleSubmit = form.handleSubmit(async (data: z.infer<typeof NewEventSchema>) => {
 
 
-        try {
-            if (!session.data?.user) {
-                throw new Error('No User found, Please login first!')
-                return;
-            }
+        console.log(data)
+        // try {
+        //     if (!session.data?.user) {
+        //         throw new Error('No User found, Please login first!')
+        //     }
 
 
 
-            // TODO : Send the event data to the database
-            const newEventUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
+        //     // TODO : Send the event data to the database
+        //     const newEventUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`
 
 
-            const formData = new FormData()
-            formData.append('imageFile', data.imageFile)
-            formData.append('eventTitle', data.title)
-            formData.append('description', data.description)
-            formData.append('category', data.category)
-            formData.append('city', data.city)
-            formData.append('location', data.venue)
-            formData.append('startDate', data.startDate.toISOString())
-            formData.append('endDate', data.endDate.toISOString())
-            formData.append('organizer', data.organizer)
-            formData.append('isPaid', data.isPaidEvent ? 'true' : 'false')
-            formData.append('ticketPrice', data.isPaidEvent ? data.ticketPrice as unknown as string : '0')
-            formData.append('totalTickets', data.isPaidEvent ? data.totalTickets as unknown as string : '0')
-            formData.append('uploadedBy', session.data?.user?.id as string)
-            const res = await fetch(newEventUrl, {
-                method: 'POST',
-                body: formData,
+        //     const formData = new FormData()
+        //     formData.append('imageFile', data.imageFile)
+        //     formData.append('eventTitle', data.title)
+        //     formData.append('description', data.description)
+        //     formData.append('category', data.category)
+        //     formData.append('city', data.city)
+        //     formData.append('location', data.venue)
+        //     formData.append('startDate', data.startDate.toISOString())
+        //     formData.append('endDate', data.endDate.toISOString())
+        //     formData.append('organizer', data.organizer)
+        //     formData.append('isPaid', data.isPaidEvent ? 'true' : 'false')
+        //     formData.append('ticketPrice', data.isPaidEvent ? data.ticketPrice as unknown as string : '0')
+        //     formData.append('totalTickets', data.isPaidEvent ? data.totalTickets as unknown as string : '0')
+        //     formData.append('uploadedBy', session.data?.user?.id as string)
+        //     const res = await fetch(newEventUrl, {
+        //         method: 'POST',
+        //         body: formData,
 
-            })
-            const resBody = await res.json()
+        //     })
+        //     const resBody = await res.json()
 
-            if (res.status !== 201) {
-                form.setError('root', { message: resBody.message as string })
-            }
+        //     if (res.status !== 201) {
+        //         form.setError('root', { message: resBody.message as string })
+        //     }
 
-            toast.success("Event created successfully!");
-            form.reset();
-            // TODO : redirect to preview page for the event to confirm publishing or not
-            Router.replace(`/events/details/${resBody.slug}`)
+        //     toast.success("Event created successfully!");
+        //     form.reset();
+        //     // TODO : redirect to preview page for the event to confirm publishing or not
+        //     Router.replace(`/events/details/${resBody.slug}`)
 
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error("Error submitting event data: " + error.message);
-            } else {
-                toast.error("An unknown error occurred");
-            }
-        }
+        // } catch (error) {
+        //     if (error instanceof Error) {
+        //         toast.error("Error submitting event data: " + error.message);
+        //     } else {
+        //         toast.error("An unknown error occurred");
+        //     }
+        // }
 
     });
 
@@ -187,6 +197,8 @@ const NewEvent = () => {
             </SelectItem>
         )), []
     );
+
+
 
     return (
         <div
@@ -282,22 +294,24 @@ const NewEvent = () => {
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Description</FormLabel>
-                                        <FormControl>
-                                            <Textarea {...field} placeholder="Event Description" rows={8} />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Briefly describe your event. What is it about? What makes it special? What can attendees expect? Keep it clear and precise.
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            <div className="relative w-full">
+                                <FormField
+                                    control={form.control}
+                                    name="description"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Event Description</FormLabel>
+                                            <FormControl>
+                                                <TipTap description={field.name} onChange={field.onChange} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Briefly describe your event. What is it about? What makes it special? What can attendees expect? Keep it clear and precise.
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
 
 
 
@@ -522,7 +536,7 @@ const NewEvent = () => {
                         }
 
                         <Button
-                            disabled={form.formState.isSubmitting || !form.formState.isValid}
+                            disabled={form.formState.isSubmitting}
                             className="cursor-pointer"
                             type="submit" >
                             {form.formState.isSubmitting && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}

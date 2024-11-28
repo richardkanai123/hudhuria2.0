@@ -29,6 +29,8 @@ const UpcomingEventsLister = async () => {
         return eventDate > currentDate
     })
 
+
+
     const UpcomingNonFeaturedEvents = FutureEvents.filter((event) => !event.isFeatured)
 
 
@@ -39,7 +41,7 @@ const UpcomingEventsLister = async () => {
                 FeaturedEvents.length > 0 && <>
                     <h1 className="w-full text-3xl font-bold text-left text-primary mb-4 "> Featured Events</h1>
 
-                    <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
+                    <div className="w-full mx-auto mt-4 flex justify-center flex-col  md:flex-row md:flex-wrap gap-4 md:items-stretch place-content-center place-items-center align-middle ">
                         {
                             FeaturedEvents.map((event) => (
                                 event ? <EventCard key={event._id} eventData={event} /> : null
@@ -50,7 +52,7 @@ const UpcomingEventsLister = async () => {
             }
             <h1 className="w-full text-3xl font-bold text-left text-primary mt-6 "> Upcoming Events</h1>
 
-            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 items-stretch place-content-center place-items-center align-middle ">
+            <div className="w-full mx-auto mt-4 flex justify-center flex-col md:flex-row md:flex-wrap gap-4 md:items-stretch place-content-center place-items-center align-middle ">
                 {
                     UpcomingNonFeaturedEvents.filter((event) => event.isPublished && !event.isDeleted).map((event) => (
                         event ? <EventCard key={event._id} eventData={event} /> : null

@@ -71,3 +71,47 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+.description{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  ul{
+    list-style: disc;
+  }
+
+  ol{
+    list-style:decimal ;
+  }
+  ul,ol {
+    text-align: center;
+    list-style-position: inside;
+  }
+  p{
+    font-size: 1.05rem;
+    text-align: justify;
+  }
+  h1{
+    font-weight: 800;
+    font-size: 1.75rem;
+  }
+
+   h2{
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+   h3{
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+
+  strong{
+    font-weight: 700;
+  }
+
+
+
+}
