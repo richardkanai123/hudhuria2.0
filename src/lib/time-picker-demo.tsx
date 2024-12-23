@@ -16,7 +16,7 @@ export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
     const secondRef = React.useRef<HTMLInputElement>(null);
 
     return (
-        <div className="flex items-end gap-2">
+        <div className="w-full mx-auto flex align-middle justify-center items-end gap-2 flex-wrap md:flex-nowrap">
             <div className="grid gap-1 text-center">
                 <Label htmlFor="hours" className="text-xs">
                     Hours
@@ -54,9 +54,7 @@ export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
                     onLeftFocus={() => minuteRef.current?.focus()}
                 />
             </div>
-            <div className="flex h-10 items-center">
-                <Clock className="ml-2 h-4 w-4" />
-            </div>
+
         </div>
     );
 }

@@ -16,7 +16,7 @@ export default function RootLayout({
         className={` font-sans antialiased w-full `}
       >
         <SessionProvider>
-          <div className="w-full max-w-[1920px] mx-auto relative min-h-screen max-h-fit">
+          <div className="w-full max-w-[1920px] mx-auto relative min-h-screen max-h-fit ">
             {children}
             <Footer />
           </div>

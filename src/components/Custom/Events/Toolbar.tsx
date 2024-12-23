@@ -18,7 +18,7 @@ export const TiptapToolbar = ({ editor }: { editor: Editor | null }) => {
     }
 
     return (
-        <div className="w-full flex items-center align-middle gap-2 prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none rounded-sm  max-w-full bg-background border-t mb-1 border-input shadow-sm p-2">
+        <div className="w-full flex items-center align-middle gap-2 prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none rounded-sm  max-w-full bg-background border-t mb-1 border-input shadow-sm p-2 flex-wrap">
             <Button
                 size="icon"
                 variant={editor.isActive("bold") ? "default" : "outline"}
@@ -82,23 +82,7 @@ export const TiptapToolbar = ({ editor }: { editor: Editor | null }) => {
                 }>
                 <BsTypeH3 className="w-4 h-4" />
             </Button>
-            <Button
-                size="icon"
-                variant={editor.isActive("orderedList") ? "default" : "outline"}
-                type="button"
-                className="px-2 py-1 border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 text-sm font-medium leading-4  text-slate-700 disabled:cursor-not-allowed disbaled:bg-transparent disabled:opacity-50"
-                onClick={() => {
-                    if (editor.isActive('bulletList')) {
-                        editor.chain().focus().toggleBulletList().run()
-                        editor.chain().focus().toggleOrderedList().run()
-                    } else {
-                        editor.chain().focus().toggleOrderedList().run()
 
-                    }
-                }
-                }>
-                <AiOutlineOrderedList className="w-4 h-4" />
-            </Button>
             <Button
                 size="icon"
                 variant={editor.isActive('bulletList') ? "default" : "outline"}
@@ -111,8 +95,7 @@ export const TiptapToolbar = ({ editor }: { editor: Editor | null }) => {
                     } else {
                         editor.chain().focus().toggleBulletList().run()
                     }
-                }
-                }>
+                }}>
                 <MdFormatListBulleted className="w-4 h-4" />
             </Button>
 

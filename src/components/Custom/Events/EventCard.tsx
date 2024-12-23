@@ -10,7 +10,7 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
     const { city, description: eventDescription, startDate, ticket_price, eventTitle, isPaid, image_id, slug } = eventData;
     const Router = useRouter()
     // description: the the first 80 characters and remove the least 3 characters
-    const ReadableDesc = eventDescription.slice(0, 80).replace(/<[^>]+>/g, "");
+    // const ReadableDesc = eventDescription.slice(0, 80).replace(/<[^>]+>/g, "");
     return (
         <div onClick={() => Router.push(`/events/details/${slug}`)} className="sm:max-w-[320px] md:w-[350px] aspect-auto flex flex-col gap-2 rounded-md  cursor-pointer bg-accent transition-all ease-linear group hover:shadow-lg hover:bg-gray-200 justify-around bg-white shadow-sm  overflow-hidden">
             <div className="w-full min-h-[200px] text-left flex flex-col items-end bg-opacity-25 bg-sky-100 bg-blend-overlay group-hover:bg-blend-normal transition-all ease-in delay-500 relative pt-1 overflow-hidden">
@@ -22,9 +22,9 @@ const EventCard = ({ eventData }: { eventData: Event }) => {
 
             <div className="w-full px-2 h-fit pb-4 flex flex-col gap-2 bg-transparent">
                 <h2 className="w-full text-lg font-semibold text-primary max-w-prose">{eventTitle}</h2>
-                <p className="w-full text-sm text-gray-500">
+                {/* <p className="w-full text-sm text-gray-500">
                     {ReadableDesc}...
-                </p>
+                </p> */}
 
                 <div className="w-full flex justify-around flex-wrap text-gray-700 self-end">
                     <Link href={`/events?city=${city}`} className="text-base flex items-center gap-1 hover:underline">

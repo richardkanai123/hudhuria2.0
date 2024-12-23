@@ -63,7 +63,7 @@ const Footer = () => {
                 <div className=" flex-1 flex flex-col items-center justify-center gap-4 sm:border-b md:border-none">
                     <h1 className="text-xl font-bold">Copyright</h1>
                     <p className="text-center text-lg font-semibold">
-                        &copy; 2024 Hudhuria. All rights reserved.
+                        &copy; {new Date().getFullYear()} Hudhuria. All rights reserved.
                     </p>
                     <p className="text-center flex gap-2 text-lg font-semibold">
                         Powered by <a href="https://github.com/richardkanai123" target='blank' className="text-sky-700 hover:text-sky-400 font-semibold  cursor-pointer">

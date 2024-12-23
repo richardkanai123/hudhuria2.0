@@ -78,16 +78,30 @@ body {
   flex-direction: column;
   gap: 0.75rem;
 
+  p{
+    text-align: justify;
+    display: inline-block;
+  }
   ul{
     list-style: disc;
-  }
-
-  ol{
-    list-style:decimal ;
+    padding-left: 1rem;
+    
   }
   ul,ol {
     text-align: center;
     list-style-position: inside;
+  }
+  li{
+    text-align: left;
+    display: list-item;
+    list-style: disc;
+    list-style-position: inside;
+
+    p{
+      text-align: justify;
+      display: inline;
+      size: 1rem;
+    }
   }
   p{
     font-size: 1.05rem;
@@ -112,6 +126,16 @@ body {
     font-weight: 700;
   }
 
+  em{
+    font-style: italic;
+  }
 
-
+  a{
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
 }
+
+/* 
+'<p>Join us for a brilliant and electrifying coding review challenge.</p><h3 class="text-lg font-semibold">Tasks</h3><ul class="list-disc"><li class="pl-4"><p>Code Review</p></li><li class="pl-4"><p>Instant hackthoon</p></li><li class="pl-4"><p>Networking</p></li><li class="pl-4"><p>Interview the gurus</p></li><li class="pl-4"><p>Get rewarded</p><p>Everyone is welcome.</p><p><em>Carry a laptop with you, and install VS code at least.</em></p></li></ul>' */
