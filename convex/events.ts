@@ -96,7 +96,9 @@ export const getEventById = query({
             throw new Error("Invalid event id");
         }
         const task = await ctx.db.get(eventid);
-
+        // if (!task) {
+        //     throw new Error("Event not found");
+        // }
         return task;
     }
 })
@@ -197,8 +199,8 @@ export const getEventsByUserId = query({
     }
 })
 
-// upadate an event given its id and new data
-export const updateEvent = mutation({
+// update an event given its id and new data
+export const updateEventDatabyId = mutation({
     args: {
         eventid: v.id("eventsTable"),
         eventTitle: v.string(),
@@ -207,20 +209,15 @@ export const updateEvent = mutation({
         city: v.string(),
         startDate: v.string(),
         endDate: v.string(),
-        image_id: v.string(),
-        image_url: v.string(),
         category: v.string(),
         isPaid: v.boolean(),
         ticket_price: v.number(),
         ticket_available: v.number(),
         organizer: v.string(),
-        attendees: v.optional(v.array(v.string())),
-        likedBy: v.optional(v.array(v.string())),
+        slug: v.string(),
         isPublished: v.boolean(),
         isDeleted: v.boolean(),
         isFeatured: v.boolean(),
-        uploadedBy: v.id('usersTable'),
-        slug: v.string(),
     },
     handler: async (ctx, args) => {
         const eventid = args.eventid;
@@ -231,8 +228,29 @@ export const updateEvent = mutation({
         if (!event) {
             throw new Error("Event not found");
         }
-        await ctx.db.patch(eventid, args);
-        return event;
+
+        // update the event with the new data, only the fields that are provided
+        const updatedEvent = await ctx.db.patch(eventid, {
+            eventTitle: args.eventTitle,
+            description: args.description,
+            location: args.location,
+            city: args.city,
+            startDate: args.startDate,
+            endDate: args.endDate,
+            category: args.category,
+            isPaid: args.isPaid,
+            ticket_price: args.ticket_price,
+            ticket_available: args.ticket_available,
+            organizer: args.organizer,
+            slug: args.slug,
+            isDeleted: false,
+            isPublished: args.isPublished,
+            isFeatured: args.isFeatured,
+        });
+        return {
+            updated: true,
+            slug: args.slug
+        };
     }
 })
     

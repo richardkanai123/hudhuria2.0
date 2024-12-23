@@ -126,6 +126,7 @@ export async function POST(request: NextRequest) {
         }
 
         revalidatePath('/')
+        revalidatePath('/events')
 
         return NextResponse.json({
             message: `Added new event!`, 

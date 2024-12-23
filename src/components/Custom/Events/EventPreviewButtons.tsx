@@ -157,7 +157,7 @@ const EventPreviewButtons = ({ eventID, isPublished, isFeatured, slug, owerID }:
                 </Button>
             }
 
-            <Button onClick={() => Router.push(`/events/edit/${eventID}`)} size='lg' className="w-full max-w-[250px] bg-lime-700 mx-auto hover:bg-opacity-35 transition-all ease-linear">
+            <Button onClick={() => Router.push(`/events/edit/${slug}`)} size='lg' className="w-full max-w-[250px] bg-lime-700 mx-auto hover:bg-opacity-35 transition-all ease-linear">
                 <MdEditDocument className="w-4 h-4 inline-block mr-2" /> Edit Event
             </Button>
 
